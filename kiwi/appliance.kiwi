@@ -77,9 +77,11 @@
         <package name="systemd-sysv"/>
         <package name="dracut"/>
         <package name="grub-efi-amd64"/>
+        <package name="grub-pc-bin"/>
         <package name="grub-common"/>
         <package name="efibootmgr"/>
         <package name="shim-signed"/>
+        <package name="fdisk"/>
         <package name="sudo"/>
         <package name="locales"/>
         <package name="console-setup"/>
