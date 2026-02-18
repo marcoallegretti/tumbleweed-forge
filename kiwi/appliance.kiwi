@@ -32,7 +32,7 @@
     </preferences>
 
     <!-- Repos: on OBS injected from project config; locally passed via build-local.sh add-repo -->
-    <repository type="apt-deb">
+    <repository type="apt-deb" repository_gpgcheck="false">
         <source path="obsrepositories:/"/>
     </repository>
 
