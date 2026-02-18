@@ -36,15 +36,13 @@
                 repository_gpgcheck="false" architectures="amd64">
         <source path="obs://Virtualization:Appliances:Builder/xUbuntu_24.04"/>
     </repository>
-    <!-- Ubuntu Noble main+universe -->
+    <!-- Ubuntu Noble main+universe (OBS flat repo) -->
     <repository type="apt-deb" alias="Ubuntu-Noble-Universe"
-                distribution="noble" components="main multiverse restricted universe"
                 repository_gpgcheck="false">
         <source path="obs://Ubuntu:24.04/universe"/>
     </repository>
-    <!-- Ubuntu Noble main (standard) -->
+    <!-- Ubuntu Noble standard (OBS flat repo) -->
     <repository type="apt-deb" alias="Ubuntu-Noble"
-                distribution="noble" components="main multiverse restricted universe"
                 repository_gpgcheck="false">
         <source path="obs://Ubuntu:24.04/standard"/>
     </repository>
