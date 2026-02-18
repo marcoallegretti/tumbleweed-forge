@@ -1,0 +1,18 @@
+# Development docs (private)
+docu_dev/
+
+# Build artifacts
+build/
+*.raw
+*.iso
+*.qcow2
+
+# IDE / editor
+.windsurf/
+.vscode/
+*.swp
+*~
+
+# OS
+.DS_Store
+Thumbs.db

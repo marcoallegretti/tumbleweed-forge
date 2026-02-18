@@ -1,0 +1,19 @@
+rebuild_on_push:
+  steps:
+    - trigger_services:
+        project: home:Mighty23:TumbleweedForge
+        package: tumbleweed-forge-image
+  filters:
+    event: push
+    branches:
+      only:
+        - main
+
+test_on_pr:
+  steps:
+    - branch_package:
+        source_project: home:Mighty23:TumbleweedForge
+        source_package: tumbleweed-forge-image
+        target_project: home:Mighty23:TumbleweedForge:CI
+  filters:
+    event: pull_request

@@ -1,0 +1,18 @@
+# -- Tumbleweed Forge Project Configuration --
+# Applied via: osc meta prjconf -e home:YOUR_USER:TumbleweedForge
+
+# Image type: KIWI
+Type: kiwi
+
+# Static download links (predictable URLs that survive rebuilds)
+Repotype: staticlinks
+
+# Dependency conflict resolution for Ubuntu Noble
+# These are common cases where OBS can't auto-resolve package choices.
+# Additional Prefer: lines will be added as conflicts are discovered during builds.
+Prefer: grub-efi-amd64
+Prefer: grub-common
+Prefer: libc-bin
+Prefer: libglib2.0-0t64
+Prefer: network-manager
+Prefer: gdm3

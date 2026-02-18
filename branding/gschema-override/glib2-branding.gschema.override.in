@@ -1,0 +1,70 @@
+# REFERENCE FILE — Original from GNOME:Factory/glib2-branding on OBS
+# Source: https://api.opensuse.org/public/source/GNOME:Factory/glib2-branding/glib2-branding.gschema.override.in
+# This file is kept for reference. The ported version is in:
+#   kiwi/root/etc/dconf/db/local.d/00-opensuse-branding.conf
+#
+# @@IF_openSUSE@@ = openSUSE-specific lines (kept)
+# @@IF_SLE@@ = SUSE Linux Enterprise lines (removed)
+# @@IF_LEAP@@ = openSUSE Leap lines (removed)
+# @@WALLPAPER_URI@@ = resolved to file:///usr/share/wallpapers/openSUSE-default.png
+# @@WALLPAPER_URI_DARK@@ = resolved to file:///usr/share/wallpapers/openSUSE-default-dark.png
+
+[org.gnome.desktop.interface]
+toolkit-accessibility = false
+
+[org.gnome.desktop.background]
+picture-uri = "@@WALLPAPER_URI@@"
+picture-uri-dark = "@@WALLPAPER_URI_DARK@@"
+picture-options = "zoom"
+@@IF_openSUSE@@primary-color = "#63bbb2ff"
+@@IF_openSUSE@@secondary-color = "#0c2a27ff"
+@@IF_SLE@@primary-color = "#0C322C"
+@@IF_SLE@@secondary-color = "#0C322C"
+
+[org.gnome.desktop.screensaver]
+@@IF_openSUSE@@picture-uri = "@@WALLPAPER_URI@@"
+@@IF_SLE@@picture-uri = "@@LOCKSCREEN_URI@@"
+picture-options = "zoom"
+@@IF_openSUSE@@primary-color = "#63bbb2ff"
+@@IF_openSUSE@@secondary-color = "#0c2a27ff"
+@@IF_SLE@@primary-color = "#0C322C"
+@@IF_SLE@@secondary-color = "#0C322C"
+@@IF_SLE@@lock-delay = 300
+
+[org.gnome.login-screen]
+logo='/usr/share/gdm/greeter/images/distributor.svg'
+
+[org.gnome.libgnomekbd.desktop]
+group-per-window = false
+
+[org.gnome.desktop.sound]
+event-sounds = true
+@@IF_openSUSE@@theme-name = "freedesktop"
+@@IF_SLE@@theme-name = "novell"
+
+[org.gnome.desktop.wm.preferences]
+@@IF_openSUSE@@audible-bell = false
+
+[org.gnome.desktop.peripherals.touchpad]
+tap-to-click = true
+
+[org.gnome.settings-daemon.plugins.housekeeping]
+ignore-paths = ['/boot/efi']
+
+[org.gnome.settings-daemon.plugins.xsettings]
+disabled-gtk-modules = [ "pk-gtk-module" ]
+
+[org.gnome.settings-daemon.plugins.media-keys]
+help = ['Help', '<Super>F1']
+logout = ['']
+shutdown = ['<Control><Alt>Delete']
+
+[org.gnome.shell]
+@@IF_openSUSE@@favorite-apps = [ 'firefox.desktop', 'org.gnome.Evolution.desktop', 'empathy.desktop', 'org.gnome.Music.desktop', 'shotwell.desktop', 'libreoffice-writer.desktop', 'org.gnome.Nautilus.desktop' ]
+@@IF_SLE@@favorite-apps = [ 'firefox.desktop', 'evolution.desktop', 'pidgin.desktop', 'gnome-photos.desktop', 'libreoffice-startcenter.desktop', 'org.gnome.Nautilus.desktop', 'yelp.desktop' ]
+
+[org.gnome.gnome-panel.applet.window-list]
+display-all-workspaces = true
+
+[org.freedesktop.Tracker.Miner.Files]
+index-removable-devices = false

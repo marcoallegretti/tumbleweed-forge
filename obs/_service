@@ -1,0 +1,20 @@
+<services>
+  <!-- Pull KIWI config files from Git -->
+  <service name="obs_scm">
+    <param name="scm">git</param>
+    <param name="url">https://github.com/marcoallegretti/tumbleweed-forge.git</param>
+    <param name="revision">main</param>
+    <param name="extract">kiwi/appliance.kiwi</param>
+    <param name="extract">kiwi/config.sh</param>
+    <param name="exclude">kiwi/root</param>
+  </service>
+  <!-- Pull the root overlay as a separate archive (KIWI needs it as a dir) -->
+  <service name="obs_scm">
+    <param name="scm">git</param>
+    <param name="url">https://github.com/marcoallegretti/tumbleweed-forge.git</param>
+    <param name="revision">main</param>
+    <param name="version">_none_</param>
+    <param name="subdir">kiwi/root</param>
+    <param name="filename">root</param>
+  </service>
+</services>

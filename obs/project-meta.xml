@@ -1,0 +1,20 @@
+<project name="home:Mighty23:TumbleweedForge">
+  <title>Tumbleweed Forge — Ubuntu Edition</title>
+  <description>
+    Image-based meta-distribution demonstrating openSUSE infrastructure.
+    Ubuntu Noble 24.04 LTS system image built with KIWI-ng on OBS.
+  </description>
+
+  <person userid="Mighty23" role="maintainer"/>
+
+  <!-- The "images" repository: where KIWI builds run -->
+  <!-- rebuild="transitive": auto-rebuild when upstream Ubuntu packages change -->
+  <!-- block="local": only block on packages within this project -->
+  <repository name="images" rebuild="transitive" block="local">
+    <!-- KIWI-ng itself (latest stable) -->
+    <path project="Virtualization:Appliances:Builder" repository="Factory"/>
+    <!-- Ubuntu Noble 24.04 main+universe packages -->
+    <path project="Ubuntu:24.04" repository="universe"/>
+    <arch>x86_64</arch>
+  </repository>
+</project>

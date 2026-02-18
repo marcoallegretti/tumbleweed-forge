@@ -1,0 +1,11 @@
+PRETTY_NAME="Tumbleweed Forge - Ubuntu Edition"
+NAME="Tumbleweed Forge"
+VERSION_ID="24.04"
+VERSION="24.04 LTS (Noble Numbat) [Forge]"
+VERSION_CODENAME=noble
+ID=tumbleweed-forge
+ID_LIKE="ubuntu debian"
+HOME_URL="https://github.com/marcoallegretti/tumbleweed-forge"
+SUPPORT_URL="https://github.com/marcoallegretti/tumbleweed-forge/issues"
+BUG_REPORT_URL="https://github.com/marcoallegretti/tumbleweed-forge/issues"
+UBUNTU_CODENAME=noble
