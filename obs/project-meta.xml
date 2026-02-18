@@ -12,7 +12,7 @@
   <!-- block="local": only block on packages within this project -->
   <repository name="images" rebuild="transitive" block="local">
     <!-- KIWI-ng itself (latest stable) -->
-    <path project="Virtualization:Appliances:Builder" repository="Factory"/>
+    <path project="Virtualization:Appliances:Builder" repository="xUbuntu_24.04"/>
     <!-- Ubuntu Noble 24.04 main+universe packages -->
     <path project="Ubuntu:24.04" repository="universe"/>
     <arch>x86_64</arch>

@@ -58,6 +58,12 @@
                 repository_gpgcheck="false" profiles="Local">
         <source path="http://security.ubuntu.com/ubuntu"/>
     </repository>
+    <!-- KIWI dracut modules (dracut-kiwi-oem-repart etc.) for local builds -->
+    <repository type="apt-deb" alias="kiwi-builder" distribution="xUbuntu_24.04"
+                components=""
+                repository_gpgcheck="false" profiles="Local">
+        <source path="https://download.opensuse.org/repositories/Virtualization:/Appliances:/Builder/xUbuntu_24.04"/>
+    </repository>
 
     <packages type="bootstrap">
         <package name="usrmerge"/>
@@ -151,6 +157,10 @@
 
         <!-- Dash-to-Dock (Ubuntu ergonomics) -->
         <package name="gnome-shell-extension-ubuntu-dock"/>
+
+        <!-- KIWI dracut modules (required for oem image type) -->
+        <package name="dracut-kiwi-oem-repart"/>
+        <package name="dracut-kiwi-lib"/>
 
         <!-- Hardware / firmware -->
         <package name="linux-firmware"/>
