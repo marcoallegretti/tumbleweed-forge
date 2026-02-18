@@ -53,7 +53,19 @@ locale-gen en_US.UTF-8
 update-locale LANG=en_US.UTF-8
 
 #============================================
-# 7. Clean up
+# 7. Apply GRUB theme
+#============================================
+if [ -f /boot/grub/themes/openSUSE/theme.txt ]; then
+    update-grub 2>/dev/null || true
+fi
+
+#============================================
+# 8. Set Plymouth theme
+#============================================
+plymouth-set-default-theme spinner 2>/dev/null || true
+
+#============================================
+# 9. Clean up
 #============================================
 apt-get autoremove -y
 apt-get clean
