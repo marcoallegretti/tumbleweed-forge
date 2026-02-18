@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- OBS-Profiles: OBS -->
 <image schemaversion="7.4" name="TumbleweedForge-UbuntuEdition">
     <description type="system">
         <author>Tumbleweed Forge Team</author>
@@ -9,11 +8,6 @@
             system image with openSUSE visual identity, built by OBS.
         </specification>
     </description>
-
-    <profiles>
-        <profile name="Local" description="Local build with explicit Ubuntu repos"/>
-        <profile name="OBS" description="OBS build using project-injected repos"/>
-    </profiles>
 
     <preferences>
         <version>0.1.0</version>
@@ -37,32 +31,9 @@
         </type>
     </preferences>
 
-    <!-- OBS: repos injected by OBS project config -->
-    <repository type="apt-deb" profiles="OBS">
+    <!-- Repos: on OBS injected from project config; locally passed via build-local.sh add-repo -->
+    <repository type="apt-deb">
         <source path="obsrepositories:/"/>
-    </repository>
-
-    <!-- Local: explicit Ubuntu Noble repos -->
-    <repository type="apt-deb" alias="noble" distribution="noble"
-                components="main restricted universe multiverse"
-                repository_gpgcheck="false" profiles="Local">
-        <source path="http://archive.ubuntu.com/ubuntu"/>
-    </repository>
-    <repository type="apt-deb" alias="noble-updates" distribution="noble-updates"
-                components="main restricted universe multiverse"
-                repository_gpgcheck="false" profiles="Local">
-        <source path="http://archive.ubuntu.com/ubuntu"/>
-    </repository>
-    <repository type="apt-deb" alias="noble-security" distribution="noble-security"
-                components="main restricted universe multiverse"
-                repository_gpgcheck="false" profiles="Local">
-        <source path="http://security.ubuntu.com/ubuntu"/>
-    </repository>
-    <!-- KIWI dracut modules (dracut-kiwi-oem-repart etc.) for local builds -->
-    <repository type="apt-deb" alias="kiwi-builder" distribution="xUbuntu_24.04"
-                components=""
-                repository_gpgcheck="false" profiles="Local">
-        <source path="https://download.opensuse.org/repositories/Virtualization:/Appliances:/Builder/xUbuntu_24.04"/>
     </repository>
 
     <packages type="bootstrap">
