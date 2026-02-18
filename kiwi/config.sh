@@ -47,10 +47,20 @@ systemctl enable NetworkManager
 systemctl set-default graphical.target
 
 #============================================
-# 6. Locale and keyboard
+# 6. Locale and keyboard (Ubuntu method)
 #============================================
 locale-gen en_US.UTF-8
 update-locale LANG=en_US.UTF-8
+
+# Keyboard setup via console-setup (Ubuntu doesn't use systemd keymaps)
+cat > /etc/default/keyboard <<KBEOF
+XKBMODEL="pc105"
+XKBLAYOUT="us"
+XKBVARIANT=""
+XKBOPTIONS=""
+BACKSPACE="guess"
+KBEOF
+dpkg-reconfigure -f noninteractive keyboard-configuration 2>/dev/null || true
 
 #============================================
 # 7. Apply GRUB theme

@@ -13,7 +13,6 @@
         <version>0.1.0</version>
         <packagemanager>apt</packagemanager>
         <locale>en_US</locale>
-        <keytable>us</keytable>
         <timezone>UTC</timezone>
         <type
             image="oem"
