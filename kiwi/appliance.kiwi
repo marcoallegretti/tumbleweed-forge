@@ -31,9 +31,22 @@
         </type>
     </preferences>
 
-    <!-- Repos: on OBS injected from project config; locally passed via build-local.sh add-repo -->
-    <repository type="apt-deb" repository_gpgcheck="false">
-        <source path="obsrepositories:/"/>
+    <!-- KIWI dracut modules + build deps -->
+    <repository type="apt-deb" alias="kiwi-appliance-builder" priority="1"
+                repository_gpgcheck="false" architectures="amd64">
+        <source path="obs://Virtualization:Appliances:Builder/xUbuntu_24.04"/>
+    </repository>
+    <!-- Ubuntu Noble main+universe -->
+    <repository type="apt-deb" alias="Ubuntu-Noble-Universe"
+                distribution="noble" components="main multiverse restricted universe"
+                repository_gpgcheck="false">
+        <source path="obs://Ubuntu:24.04/universe"/>
+    </repository>
+    <!-- Ubuntu Noble main (standard) -->
+    <repository type="apt-deb" alias="Ubuntu-Noble"
+                distribution="noble" components="main multiverse restricted universe"
+                repository_gpgcheck="false">
+        <source path="obs://Ubuntu:24.04/standard"/>
     </repository>
 
     <packages type="bootstrap">
