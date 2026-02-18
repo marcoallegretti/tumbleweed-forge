@@ -37,7 +37,6 @@
     </repository>
 
     <packages type="bootstrap">
-        <package name="usrmerge"/>
         <package name="apt"/>
         <package name="apt-utils"/>
         <package name="debconf"/>

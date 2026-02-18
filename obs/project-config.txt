@@ -1,18 +1,34 @@
 # -- Tumbleweed Forge Project Configuration --
 # Applied via: osc meta prjconf -e home:Mighty23:TumbleweedForge
+# Based on: Virtualization:Appliances:Images:Testing_x86:ubuntu
 
-# Image type: KIWI
+%if "%_repository" == "images"
 Type: kiwi
-
-# Static download links (predictable URLs that survive rebuilds)
 Repotype: staticlinks
+Patterntype: none
 
-# Dependency conflict resolution for Ubuntu Noble
-# These are common cases where OBS can't auto-resolve package choices.
-# Additional Prefer: lines will be added as conflicts are discovered during builds.
+# Map KIWI virtual deps to real packages
+substitute: kiwi python3-kiwi
+substitute: kiwi-packagemanager:apt apt
+substitute: kiwi-filesystem:ext4 kiwi-systemdeps-filesystems
+substitute: kiwi-image:oem kiwi-systemdeps-disk-images
+substitute: kiwi-image:iso kiwi-systemdeps-iso-media
+substitute: kiwi-image:docker kiwi-systemdeps-containers
+
+# Build host tools
+support: debootstrap
+support: apt-utils
+support: rsync
+support: fdisk
+support: xzdec
+
+# Ubuntu Noble package preferences
+Prefer: fonts-ubuntu
+Prefer: python3-pyxattr
 Prefer: grub-efi-amd64
 Prefer: grub-common
 Prefer: libc-bin
 Prefer: libglib2.0-0t64
 Prefer: network-manager
 Prefer: gdm3
+%endif
