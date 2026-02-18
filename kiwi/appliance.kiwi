@@ -44,14 +44,17 @@
 
     <!-- Local: explicit Ubuntu Noble repos -->
     <repository type="apt-deb" alias="noble" distribution="noble"
+                components="main restricted universe multiverse"
                 repository_gpgcheck="false" profiles="Local">
         <source path="http://archive.ubuntu.com/ubuntu"/>
     </repository>
     <repository type="apt-deb" alias="noble-updates" distribution="noble-updates"
+                components="main restricted universe multiverse"
                 repository_gpgcheck="false" profiles="Local">
         <source path="http://archive.ubuntu.com/ubuntu"/>
     </repository>
     <repository type="apt-deb" alias="noble-security" distribution="noble-security"
+                components="main restricted universe multiverse"
                 repository_gpgcheck="false" profiles="Local">
         <source path="http://security.ubuntu.com/ubuntu"/>
     </repository>
@@ -123,8 +126,31 @@
         <package name="gnome-backgrounds"/>
         <package name="dconf-cli"/>
 
+        <!-- Apps referenced in shell favorites -->
+        <package name="firefox"/>
+        <package name="gnome-music"/>
+
+        <!-- File manager backends -->
+        <package name="gvfs"/>
+        <package name="gvfs-backends"/>
+
+        <!-- Audio (PipeWire, default in Noble) -->
+        <package name="pipewire"/>
+        <package name="pipewire-pulse"/>
+        <package name="wireplumber"/>
+
+        <!-- Session essentials -->
+        <package name="gnome-keyring"/>
+        <package name="xdg-user-dirs"/>
+        <package name="xdg-user-dirs-gtk"/>
+        <package name="dbus-user-session"/>
+
+        <!-- Boot splash -->
+        <package name="plymouth"/>
+        <package name="plymouth-theme-spinner"/>
+
         <!-- Dash-to-Dock (Ubuntu ergonomics) -->
-        <package name="gnome-shell-extension-dashtodock"/>
+        <package name="gnome-shell-extension-ubuntu-dock"/>
 
         <!-- Hardware / firmware -->
         <package name="linux-firmware"/>
@@ -146,5 +172,9 @@
     <users>
         <user password="!*" home="/root" name="root" groups="root"
               pwdformat="encrypted"/>
+        <!-- Default user (password: forge) — OEM first-boot should prompt change -->
+        <user password="$6$tForge$KzOH7M4QFUT3pBEQOjSEZl9dBp1VlWZYkMSzKiV57B/KUdvWxL1nckcVVxos9Q4kwnk92nvfLom/2evKqvJ6d/"
+              home="/home/forge" name="forge" groups="forge,sudo,adm,cdrom,dip,plugdev"
+              pwdformat="encrypted" shell="/bin/bash"/>
     </users>
 </image>

@@ -3,6 +3,7 @@ docu_dev/
 
 # Build artifacts
 build/
+build-output/
 *.raw
 *.iso
 *.qcow2

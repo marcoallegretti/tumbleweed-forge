@@ -1,5 +1,5 @@
 # -- Tumbleweed Forge Project Configuration --
-# Applied via: osc meta prjconf -e home:YOUR_USER:TumbleweedForge
+# Applied via: osc meta prjconf -e home:Mighty23:TumbleweedForge
 
 # Image type: KIWI
 Type: kiwi
