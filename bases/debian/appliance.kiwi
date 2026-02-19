@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<image schemaversion="7.4" name="TumbleweedForge-UbuntuEdition">
+<image schemaversion="7.4" name="TumbleweedForge-DebianEdition">
     <description type="system">
         <author>Tumbleweed Forge Team</author>
         <contact>forge@example.org</contact>
         <specification>
-            Tumbleweed Forge - Ubuntu Edition: Rolling Ubuntu-based
+            Tumbleweed Forge - Debian Edition: Stable Debian-based
             system image with openSUSE visual identity, built by OBS.
         </specification>
     </description>
@@ -32,17 +32,12 @@
     <!-- KIWI dracut modules + build deps -->
     <repository type="apt-deb" alias="kiwi-appliance-builder" priority="1"
                 repository_gpgcheck="false" architectures="amd64">
-        <source path="obs://Virtualization:Appliances:Builder/xUbuntu_24.04"/>
+        <source path="obs://Virtualization:Appliances:Builder/Debian_12"/>
     </repository>
-    <!-- Ubuntu Noble main+universe (OBS flat repo) -->
-    <repository type="apt-deb" alias="Ubuntu-Noble-Universe"
+    <!-- Debian Bookworm main (OBS flat repo) -->
+    <repository type="apt-deb" alias="Debian-Bookworm"
                 repository_gpgcheck="false">
-        <source path="obs://Ubuntu:24.04/universe"/>
-    </repository>
-    <!-- Ubuntu Noble standard (OBS flat repo) -->
-    <repository type="apt-deb" alias="Ubuntu-Noble"
-                repository_gpgcheck="false">
-        <source path="obs://Ubuntu:24.04/standard"/>
+        <source path="obs://Debian:12/standard"/>
     </repository>
 
     <packages type="bootstrap">
@@ -70,9 +65,14 @@
         <package name="mawk"/>
     </packages>
 
+    <!-- openSUSE Experience Layer overlay (branding, dconf, GRUB, Plymouth) -->
+    <packages type="image">
+        <archive name="experience-overlay.tar.gz"/>
+    </packages>
+
     <packages type="image">
         <!-- Core system -->
-        <package name="linux-generic"/>
+        <package name="linux-image-amd64"/>
         <package name="systemd"/>
         <package name="systemd-sysv"/>
         <package name="dracut"/>
@@ -80,7 +80,6 @@
         <package name="grub-pc-bin"/>
         <package name="grub-common"/>
         <package name="efibootmgr"/>
-        <package name="shim-signed"/>
         <package name="fdisk"/>
         <package name="sudo"/>
         <package name="locales"/>
@@ -92,7 +91,7 @@
         <!-- Network -->
         <package name="network-manager"/>
 
-        <!-- GNOME Desktop (core, Snap-free) -->
+        <!-- GNOME Desktop (core) -->
         <package name="gnome-shell"/>
         <package name="gnome-session"/>
         <package name="gdm3"/>
@@ -114,14 +113,13 @@
         <package name="dconf-cli"/>
 
         <!-- Apps referenced in shell favorites -->
-        <package name="firefox"/>
-        <package name="gnome-music"/>
+        <package name="firefox-esr"/>
 
         <!-- File manager backends -->
         <package name="gvfs"/>
         <package name="gvfs-backends"/>
 
-        <!-- Audio (PipeWire, default in Noble) -->
+        <!-- Audio (PipeWire, available in Bookworm) -->
         <package name="pipewire"/>
         <package name="pipewire-pulse"/>
         <package name="wireplumber"/>
@@ -134,36 +132,23 @@
 
         <!-- Boot splash -->
         <package name="plymouth"/>
-        <package name="plymouth-theme-spinner"/>
+        <package name="plymouth-themes"/>
 
-        <!-- Dash-to-Dock (Ubuntu ergonomics) -->
-        <package name="gnome-shell-extension-ubuntu-dock"/>
+        <!-- Dash-to-Dock (from Debian repos if available) -->
+        <package name="gnome-shell-extension-dash-to-dock"/>
 
         <!-- KIWI dracut modules (required for oem image type) -->
         <package name="dracut-kiwi-oem-repart"/>
         <package name="dracut-kiwi-lib"/>
 
         <!-- Hardware / firmware -->
-        <package name="linux-firmware"/>
-    </packages>
-
-    <packages type="delete">
-        <!-- Remove Snap ecosystem -->
-        <package name="snapd"/>
-        <package name="snap-confine"/>
-        <!-- Remove upstream Ubuntu branding -->
-        <package name="ubuntu-wallpapers"/>
-        <package name="ubuntu-wallpapers-noble"/>
-        <package name="yaru-theme-gnome-shell"/>
-        <package name="yaru-theme-gtk"/>
-        <package name="yaru-theme-icon"/>
-        <package name="yaru-theme-sound"/>
+        <package name="firmware-linux-free"/>
     </packages>
 
     <users>
         <user password="!*" home="/root" name="root" groups="root"
               pwdformat="encrypted"/>
-        <!-- Default user (password: forge) — OEM first-boot should prompt change -->
+        <!-- Default user (password: forge) -->
         <user password="$6$tForge$KzOH7M4QFUT3pBEQOjSEZl9dBp1VlWZYkMSzKiV57B/KUdvWxL1nckcVVxos9Q4kwnk92nvfLom/2evKqvJ6d/"
               home="/home/forge" name="forge" groups="forge,sudo,adm,cdrom,dip,plugdev"
               pwdformat="encrypted" shell="/bin/bash"/>

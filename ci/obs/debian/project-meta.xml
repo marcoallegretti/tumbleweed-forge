@@ -1,0 +1,14 @@
+<project name="home:Mighty23:TumbleweedForge">
+  <title>Tumbleweed Forge — Multi-Edition</title>
+  <description>
+    Image-based meta-distribution demonstrating openSUSE infrastructure.
+    Multi-base system images built with KIWI-ng on OBS.
+  </description>
+
+  <person userid="Mighty23" role="maintainer"/>
+
+  <!-- Repos specified in each base's appliance.kiwi via obs:// URLs -->
+  <repository name="images" rebuild="transitive" block="local">
+    <arch>x86_64</arch>
+  </repository>
+</project>

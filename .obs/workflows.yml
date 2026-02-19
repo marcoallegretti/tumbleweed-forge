@@ -1,19 +1,39 @@
-rebuild_on_push:
+rebuild_ubuntu_on_push:
   steps:
     - trigger_services:
         project: home:Mighty23:TumbleweedForge
-        package: tumbleweed-forge-image
+        package: tumbleweed-forge-ubuntu
   filters:
     event: push
     branches:
       only:
         - main
 
-test_on_pr:
+rebuild_debian_on_push:
+  steps:
+    - trigger_services:
+        project: home:Mighty23:TumbleweedForge
+        package: tumbleweed-forge-debian
+  filters:
+    event: push
+    branches:
+      only:
+        - main
+
+test_ubuntu_on_pr:
   steps:
     - branch_package:
         source_project: home:Mighty23:TumbleweedForge
-        source_package: tumbleweed-forge-image
+        source_package: tumbleweed-forge-ubuntu
+        target_project: home:Mighty23:TumbleweedForge:CI
+  filters:
+    event: pull_request
+
+test_debian_on_pr:
+  steps:
+    - branch_package:
+        source_project: home:Mighty23:TumbleweedForge
+        source_package: tumbleweed-forge-debian
         target_project: home:Mighty23:TumbleweedForge:CI
   filters:
     event: pull_request

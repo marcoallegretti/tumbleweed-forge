@@ -1,0 +1,29 @@
+<services>
+  <!-- Pull Ubuntu base KIWI description files -->
+  <service name="obs_scm">
+    <param name="scm">git</param>
+    <param name="url">https://github.com/marcoallegretti/tumbleweed-forge.git</param>
+    <param name="revision">main</param>
+    <param name="extract">bases/ubuntu/appliance.kiwi</param>
+    <param name="extract">bases/ubuntu/config.sh</param>
+    <param name="exclude">bases/ubuntu/root</param>
+  </service>
+  <!-- Pull Ubuntu base root overlay (distro-specific files) -->
+  <service name="obs_scm">
+    <param name="scm">git</param>
+    <param name="url">https://github.com/marcoallegretti/tumbleweed-forge.git</param>
+    <param name="revision">main</param>
+    <param name="version">_none_</param>
+    <param name="subdir">bases/ubuntu/root</param>
+    <param name="filename">root</param>
+  </service>
+  <!-- Pull experience overlay (branding, dconf, GRUB, Plymouth) as tar archive -->
+  <service name="obs_scm">
+    <param name="scm">git</param>
+    <param name="url">https://github.com/marcoallegretti/tumbleweed-forge.git</param>
+    <param name="revision">main</param>
+    <param name="version">_none_</param>
+    <param name="subdir">experience/overlay</param>
+    <param name="filename">experience-overlay</param>
+  </service>
+</services>
