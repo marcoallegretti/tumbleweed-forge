@@ -46,6 +46,9 @@ ci/scripts/build-local.sh debian
 
 # Build Deepin edition
 ci/scripts/build-local.sh deepin
+
+# Build KDE Neon edition
+ci/scripts/build-local.sh kde-neon
 ```
 
 Test in QEMU:
@@ -92,6 +95,10 @@ bases/                       Base Layer (distro-specific)
     appliance.kiwi           KIWI image description
     config.sh                DDE + LightDM + wallpaper override
     _constraints             OBS build resources
+  kde-neon/                  KDE Neon (Ubuntu Noble + latest Plasma)
+    appliance.kiwi           Plasma desktop packages
+    config.sh                SDDM + Plasma wallpaper + Forge identity
+    _constraints             OBS build resources
 
 ci/                          Build Layer
   obs/                       OBS configurations
@@ -100,6 +107,7 @@ ci/                          Build Layer
     ubuntu/_service           Ubuntu source service
     debian/_service           Debian source service
     deepin/_service           Deepin source service
+    kde-neon/_service         KDE Neon source service
   scripts/                   Build automation
     assemble.sh              Merge experience + base into KIWI build dir
     build-local.sh           Local KIWI build with repo injection
@@ -127,7 +135,8 @@ Two automatic trigger paths — zero manual intervention:
 | **Ubuntu Noble 24.04** | ✅ Building on OBS | GNOME, snap-free |
 | **Debian Bookworm 12** | ✅ Building on OBS | GNOME, stability reference |
 | **Deepin 23 (beige)** | 🔧 Local builds | DDE (Deepin Desktop Environment) |
-| Fedora | Planned | GNOME, innovation reference |
+| **KDE Neon** | 🔧 Local builds | KDE Plasma 6 (latest stable on Ubuntu LTS) |
+| Fedora | Planned | RPM-based, innovation reference |
 | Arch | Planned | Advanced user segment |
 
 ## Tech Stack
@@ -136,7 +145,7 @@ Two automatic trigger paths — zero manual intervention:
 |---|---|
 | **OBS** | Central orchestrator — builds, signs, publishes, auto-rebuilds |
 | **KIWI-ng** | Image builder — produces deployable `.raw` disk images |
-| **GNOME / DDE** | Native desktop environments per distro edition |
+| **GNOME / Plasma / DDE** | Native desktop environments per distro edition |
 | **Agama** | Installer (future phase) |
 
 ## Downloads

@@ -1,0 +1,19 @@
+<services>
+  <!-- Pull KDE Neon base KIWI description files -->
+  <service name="obs_scm">
+    <param name="scm">git</param>
+    <param name="url">https://github.com/marcoallegretti/tumbleweed-forge.git</param>
+    <param name="revision">main</param>
+    <param name="extract">bases/kde-neon/appliance.kiwi</param>
+    <param name="extract">bases/kde-neon/config.sh</param>
+  </service>
+  <!-- Pull experience overlay as root.obscpio (KIWI root overlay on OBS) -->
+  <service name="obs_scm">
+    <param name="scm">git</param>
+    <param name="url">https://github.com/marcoallegretti/tumbleweed-forge.git</param>
+    <param name="revision">main</param>
+    <param name="version">_none_</param>
+    <param name="subdir">experience/overlay</param>
+    <param name="filename">root</param>
+  </service>
+</services>

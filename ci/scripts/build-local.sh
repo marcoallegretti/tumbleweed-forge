@@ -39,8 +39,17 @@ case "$BASE" in
             "--add-repo" "https://download.opensuse.org/repositories/Virtualization:/Appliances:/Builder/Debian_12,apt-deb,kiwi-builder,,Debian_12,false"
         )
         ;;
+    kde-neon)
+        REPOS=(
+            "--add-repo" "http://archive.neon.kde.org/user,apt-deb,noble,main,neon-user,false"
+            "--add-repo" "http://archive.ubuntu.com/ubuntu,apt-deb,noble,main restricted universe multiverse,noble,false"
+            "--add-repo" "http://archive.ubuntu.com/ubuntu,apt-deb,noble-updates,main restricted universe multiverse,noble-updates,false"
+            "--add-repo" "http://security.ubuntu.com/ubuntu,apt-deb,noble-security,main restricted universe multiverse,noble-security,false"
+            "--add-repo" "https://download.opensuse.org/repositories/Virtualization:/Appliances:/Builder/xUbuntu_24.04,apt-deb,kiwi-builder,,xUbuntu_24.04,false"
+        )
+        ;;
     *)
-        echo "Error: unknown base '$BASE'. Available: ubuntu, debian, deepin"
+        echo "Error: unknown base '$BASE'. Available: ubuntu, debian, deepin, kde-neon"
         exit 1
         ;;
 esac
