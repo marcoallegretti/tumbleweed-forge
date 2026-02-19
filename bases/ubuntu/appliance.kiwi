@@ -9,10 +9,18 @@
         </specification>
     </description>
 
+    <profiles>
+        <profile name="disk" description="OEM installable disk image"/>
+        <profile name="live" description="Live ISO hybrid image"/>
+    </profiles>
+
     <preferences>
         <version>0.1.0</version>
         <packagemanager>apt</packagemanager>
         <timezone>UTC</timezone>
+    </preferences>
+
+    <preferences profiles="disk">
         <type
             image="oem"
             filesystem="ext4"
@@ -26,6 +34,19 @@
                 <oem-resize>true</oem-resize>
             </oemconfig>
             <size unit="G">12</size>
+        </type>
+    </preferences>
+
+    <preferences profiles="live">
+        <type
+            image="iso"
+            primary="true"
+            flags="overlay"
+            firmware="efi"
+            initrd_system="dracut"
+            hybridpersistent="true"
+            hybridpersistent_filesystem="ext4">
+            <bootloader name="grub2" timeout="5"/>
         </type>
     </preferences>
 
@@ -145,6 +166,11 @@
 
         <!-- Hardware / firmware -->
         <package name="linux-firmware"/>
+    </packages>
+
+    <!-- Additional package for live ISO profile -->
+    <packages type="image" profiles="live">
+        <package name="dracut-kiwi-live"/>
     </packages>
 
     <packages type="delete">

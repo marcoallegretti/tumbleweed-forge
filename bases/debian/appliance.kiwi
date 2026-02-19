@@ -9,10 +9,18 @@
         </specification>
     </description>
 
+    <profiles>
+        <profile name="disk" description="OEM installable disk image"/>
+        <profile name="live" description="Live ISO hybrid image"/>
+    </profiles>
+
     <preferences>
         <version>0.1.0</version>
         <packagemanager>apt</packagemanager>
         <timezone>UTC</timezone>
+    </preferences>
+
+    <preferences profiles="disk">
         <type
             image="oem"
             filesystem="ext4"
@@ -25,7 +33,20 @@
             <oemconfig>
                 <oem-resize>true</oem-resize>
             </oemconfig>
-            <size unit="G">12</size>
+            <size unit="G">16</size>
+        </type>
+    </preferences>
+
+    <preferences profiles="live">
+        <type
+            image="iso"
+            primary="true"
+            flags="overlay"
+            firmware="efi"
+            initrd_system="dracut"
+            hybridpersistent="true"
+            hybridpersistent_filesystem="ext4">
+            <bootloader name="grub2" timeout="5"/>
         </type>
     </preferences>
 
@@ -85,10 +106,19 @@
         <package name="network-manager"/>
 
         <!--
-            GNOME Desktop — matches Debian's gnome-core metapackage deps.
-            This is what `tasksel install gnome-desktop` pulls in.
+            task-desktop: X.org and Debian branding
+        -->
+        <package name="xorg"/>
+        <package name="xserver-xorg-video-all"/>
+        <package name="xserver-xorg-input-all"/>
+        <package name="desktop-base"/>
+
+        <!--
+            GNOME Desktop — matches Debian's task-gnome-desktop.
+            Includes gnome-core + full gnome metapackage deps.
             Preserves the authentic Debian GNOME experience.
         -->
+        <!-- gnome-core -->
         <package name="gnome-shell"/>
         <package name="gnome-shell-extensions"/>
         <package name="gnome-session"/>
@@ -124,6 +154,47 @@
         <package name="dconf-cli"/>
         <package name="dconf-gsettings-backend"/>
 
+        <!-- gnome metapackage (full GNOME beyond gnome-core) -->
+        <package name="cheese"/>
+        <package name="file-roller"/>
+        <package name="gnome-calendar"/>
+        <package name="gnome-clocks"/>
+        <package name="gnome-color-manager"/>
+        <package name="gnome-maps"/>
+        <package name="gnome-music"/>
+        <package name="gnome-weather"/>
+        <package name="gnome-sound-recorder"/>
+        <package name="gnome-tweaks"/>
+        <package name="shotwell"/>
+        <package name="simple-scan"/>
+        <package name="orca"/>
+        <package name="seahorse"/>
+        <package name="cups-pk-helper"/>
+
+        <!-- Evolution (Debian default mail/calendar) -->
+        <package name="evolution"/>
+        <package name="evolution-plugins"/>
+
+        <!-- Media -->
+        <package name="rhythmbox"/>
+        <package name="rhythmbox-plugins"/>
+        <package name="totem-plugins"/>
+        <package name="gstreamer1.0-libav"/>
+        <package name="gstreamer1.0-plugins-ugly"/>
+
+        <!-- LibreOffice (Debian task-gnome-desktop recommends) -->
+        <package name="libreoffice-gnome"/>
+        <package name="libreoffice-writer"/>
+        <package name="libreoffice-calc"/>
+        <package name="libreoffice-impress"/>
+
+        <!-- NetworkManager GUI -->
+        <package name="network-manager-gnome"/>
+        <package name="libproxy1-plugin-networkmanager"/>
+
+        <!-- Synaptic (Debian task-gnome-desktop recommends) -->
+        <package name="synaptic"/>
+
         <!-- Default browser (Debian ships ESR) -->
         <package name="firefox-esr"/>
 
@@ -143,6 +214,8 @@
         <package name="xdg-desktop-portal-gnome"/>
         <package name="dbus-user-session"/>
         <package name="tracker"/>
+        <package name="avahi-daemon"/>
+        <package name="libgsf-bin"/>
 
         <!-- Printing -->
         <package name="system-config-printer-common"/>
@@ -157,6 +230,11 @@
 
         <!-- Hardware / firmware -->
         <package name="firmware-linux-free"/>
+    </packages>
+
+    <!-- Additional package for live ISO profile -->
+    <packages type="image" profiles="live">
+        <package name="dracut-kiwi-live"/>
     </packages>
 
     <users>

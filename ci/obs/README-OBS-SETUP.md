@@ -14,10 +14,23 @@ Step-by-step instructions to set up the Tumbleweed Forge build pipeline on the O
 ## Quick Setup (Automated)
 
 ```bash
-./scripts/obs-setup.sh Mighty23
+ci/scripts/obs-setup.sh <base> <OBS_USERNAME>
+
+# Examples
+ci/scripts/obs-setup.sh ubuntu Mighty23
+ci/scripts/obs-setup.sh debian Mighty23
 ```
 
-This creates the project, sets the config, creates the package, and uploads the `_service` file.
+This creates/updates the project, sets project config, creates the package, and uploads `_service` (+ `_constraints` when present).
+
+## Current OBS Support
+
+| Base | OBS support |
+|---|---|
+| Ubuntu | ✅ |
+| Debian | ✅ |
+| Deepin | 🔧 local-only (external repo not mirrored on OBS) |
+| KDE Neon | 🔧 local-only (external repo not mirrored on OBS) |
 
 ## Manual Setup
 
@@ -27,15 +40,15 @@ This creates the project, sets the config, creates the package, and uploads the 
 osc meta prj -e home:Mighty23:TumbleweedForge
 ```
 
-Paste the content from `obs/project-meta.xml`.
+Paste the content from `ci/obs/project-meta.xml`.
 
 Key settings in the project meta:
 - **`rebuild="transitive"`** — OBS automatically rebuilds when upstream Ubuntu packages change (this is the rolling update mechanism)
 - **`block="local"`** — only block on packages within this project
-- **`Virtualization:Appliances:Builder/Factory`** — provides KIWI-ng build tooling
-- **`Ubuntu:24.04/universe`** — provides Ubuntu Noble packages
+- **`Virtualization:Appliances:Builder/*`** — provides KIWI-ng build tooling
+- **`Ubuntu:24.04` and `Debian:12`** — mirrored distro package sources available on OBS
 
-> **Note**: Verify the exact OBS path for Ubuntu Noble. If `Ubuntu:24.04` doesn't exist, you may need Download-on-Demand (DoD) repos.
+> **Note**: Some upstream repos (for example KDE Neon and Deepin) are not available as OBS projects. In a home project, direct URLs in KIWI and DoD `<download .../>` project entries are restricted (see "External Repo Limitation" below).
 
 ### Step 2: Set the Project Configuration
 
@@ -43,7 +56,7 @@ Key settings in the project meta:
 osc meta prjconf -e home:Mighty23:TumbleweedForge
 ```
 
-Paste the content from `obs/project-config.txt`.
+Paste the content from `ci/obs/project-config.txt`.
 
 - **`Type: kiwi`** — tells OBS this is a KIWI image build
 - **`Repotype: staticlinks`** — creates stable download URLs that don't change with rebuilds
@@ -51,20 +64,22 @@ Paste the content from `obs/project-config.txt`.
 
 ### Step 3: Create the Package
 
-```bash
-osc meta pkg -e home:Mighty23:TumbleweedForge tumbleweed-forge-image
-```
+Use a per-base package name:
 
-Fill in a title and description.
+```bash
+osc meta pkg -e home:Mighty23:TumbleweedForge tumbleweed-forge-ubuntu
+osc meta pkg -e home:Mighty23:TumbleweedForge tumbleweed-forge-debian
+```
 
 ### Step 4: Upload the Source Service
 
 ```bash
-osc checkout home:Mighty23:TumbleweedForge tumbleweed-forge-image
-cd home:Mighty23:TumbleweedForge/tumbleweed-forge-image
-cp /path/to/obs/_service .
-osc add _service
-osc commit -m "Initial: obs_scm integration with GitHub"
+osc checkout home:Mighty23:TumbleweedForge tumbleweed-forge-ubuntu
+cd home:Mighty23:TumbleweedForge/tumbleweed-forge-ubuntu
+cp /path/to/ci/obs/ubuntu/_service .
+cp /path/to/bases/ubuntu/_constraints .
+osc add _service _constraints
+osc commit -m "Initial setup: obs_scm integration for ubuntu"
 ```
 
 OBS will immediately pull sources from Git and trigger a build.
@@ -98,6 +113,19 @@ After setup, check:
 - Download URL: `https://download.opensuse.org/repositories/home:/Mighty23:/TumbleweedForge/images/`
 
 ## Troubleshooting
+
+### External repo limitation in home projects
+
+When a base references non-OBS URLs in `appliance.kiwi`, OBS KIWI can fail with:
+
+- `repo url not using obs:/ scheme: http://archive.neon.kde.org/user`
+- `repo url not using obs:/ scheme: https://community-packages.deepin.com/beige`
+
+And when trying to add DoD in project meta, OBS can reject with:
+
+- `admin rights are required to change projects using remote resources`
+
+Implication: KDE Neon and Deepin remain local-only until an OBS admin provides a mirror/DoD-backed project.
 
 ### "unresolvable: have choice for PACKAGE: PKG_A PKG_B"
 

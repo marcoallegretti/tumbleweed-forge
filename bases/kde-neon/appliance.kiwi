@@ -9,10 +9,18 @@
         </specification>
     </description>
 
+    <profiles>
+        <profile name="disk" description="OEM installable disk image"/>
+        <profile name="live" description="Live ISO hybrid image"/>
+    </profiles>
+
     <preferences>
         <version>0.1.0</version>
         <packagemanager>apt</packagemanager>
         <timezone>UTC</timezone>
+    </preferences>
+
+    <preferences profiles="disk">
         <type
             image="oem"
             filesystem="ext4"
@@ -29,6 +37,19 @@
         </type>
     </preferences>
 
+    <preferences profiles="live">
+        <type
+            image="iso"
+            primary="true"
+            flags="overlay"
+            firmware="efi"
+            initrd_system="dracut"
+            hybridpersistent="true"
+            hybridpersistent_filesystem="ext4">
+            <bootloader name="grub2" timeout="5"/>
+        </type>
+    </preferences>
+
     <!-- KIWI dracut modules + build deps -->
     <repository type="apt-deb" alias="kiwi-appliance-builder" priority="1"
                 repository_gpgcheck="false" architectures="amd64">
@@ -37,7 +58,7 @@
     <!--
         KDE Neon User repo (archive.neon.kde.org/user) is NOT mirrored
         on OBS — no obs:// equivalent exists. For local builds it is
-        injected by build-local.sh via - -add-repo. OBS builds require
+        injected by build-local.sh via --add-repo. OBS builds require
         an admin-level DoD mirror; until one exists this base is
         local-only.
     -->
@@ -176,6 +197,11 @@
 
         <!-- Hardware / firmware -->
         <package name="linux-firmware"/>
+    </packages>
+
+    <!-- Additional package for live ISO profile -->
+    <packages type="image" profiles="live">
+        <package name="dracut-kiwi-live"/>
     </packages>
 
     <packages type="delete">

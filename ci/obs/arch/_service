@@ -1,0 +1,20 @@
+<services>
+    <service name="obs_scm">
+        <param name="url">https://github.com/marcoallegretti/tumbleweed-forge.git</param>
+        <param name="scm">git</param>
+        <param name="subdir">bases/arch</param>
+        <param name="extract">appliance.kiwi</param>
+        <param name="extract">config.sh</param>
+        <param name="extract">editbootinstall_arch.sh</param>
+        <param name="extract">iso_boot.template</param>
+        <param name="revision">main</param>
+    </service>
+    <service name="obs_scm">
+        <param name="url">https://github.com/marcoallegretti/tumbleweed-forge.git</param>
+        <param name="scm">git</param>
+        <param name="subdir">experience/overlay</param>
+        <param name="filename">root</param>
+        <param name="version">_none_</param>
+        <param name="revision">main</param>
+    </service>
+</services>

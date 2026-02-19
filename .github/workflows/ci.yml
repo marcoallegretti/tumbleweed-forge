@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        base: [ubuntu, debian, deepin, kde-neon]
+        base: [ubuntu, debian, deepin, kde-neon, arch]
     steps:
       - uses: actions/checkout@v4
 

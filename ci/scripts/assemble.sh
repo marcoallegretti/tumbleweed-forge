@@ -29,6 +29,11 @@ cp "$BASE_DIR/appliance.kiwi" "$BUILD_DIR/"
 cp "$BASE_DIR/config.sh" "$BUILD_DIR/"
 [ -f "$BASE_DIR/_constraints" ] && cp "$BASE_DIR/_constraints" "$BUILD_DIR/"
 
+# Copy extra KIWI helper scripts if present (e.g. Arch editbootinstall)
+for extra in editbootinstall_arch.sh iso_boot.template; do
+    [ -f "$BASE_DIR/$extra" ] && cp "$BASE_DIR/$extra" "$BUILD_DIR/"
+done
+
 # Create root overlay by merging experience + base overlays
 echo "=== Merging root overlay ==="
 mkdir -p "$BUILD_DIR/root"

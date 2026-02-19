@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<image schemaversion="7.5" name="TumbleweedForge-ArchEdition">
+    <description type="system">
+        <author>Tumbleweed Forge Team</author>
+        <contact>forge@example.org</contact>
+        <specification>
+            Tumbleweed Forge - Arch Edition: Rolling Arch Linux with
+            KDE Plasma desktop and openSUSE boot identity, built by OBS.
+        </specification>
+    </description>
+
+    <profiles>
+        <profile name="disk" description="OEM installable disk image"/>
+        <profile name="live" description="Live ISO hybrid image"/>
+    </profiles>
+
+    <preferences>
+        <version>0.1.0</version>
+        <packagemanager>pacman</packagemanager>
+        <locale>POSIX</locale>
+        <keytable>us</keytable>
+        <timezone>UTC</timezone>
+        <rpm-check-signatures>false</rpm-check-signatures>
+    </preferences>
+
+    <preferences profiles="disk">
+        <!--
+             Arch Linux does not support linuxefi grub module.
+             editbootinstall_arch.sh patches grub.cfg accordingly.
+        -->
+        <type
+            image="oem"
+            filesystem="ext4"
+            firmware="efi"
+            editbootinstall="editbootinstall_arch.sh">
+            <bootloader name="grub2" timeout="5"
+                        grub_template="iso_boot.template"/>
+            <oemconfig>
+                <oem-resize>true</oem-resize>
+            </oemconfig>
+            <size unit="G">14</size>
+        </type>
+    </preferences>
+
+    <preferences profiles="live">
+        <type
+            image="iso"
+            primary="true"
+            flags="dmsquash"
+            firmware="efi">
+            <bootloader name="grub2" timeout="5"
+                        grub_template="iso_boot.template"/>
+        </type>
+    </preferences>
+
+    <!-- KIWI dracut hooks for Arch (custom kernel/initrd naming) -->
+    <repository components="Virtualization_Appliances_Staging_Arch_Linux">
+        <source path="obs://Virtualization:Appliances:Staging/Arch_Linux"/>
+    </repository>
+    <!-- dracut-hooks package for Arch KIWI builds -->
+    <repository components="Virtualization_Appliances_Images_Testing_x86_archlinux_standard">
+        <source path="obs://Virtualization:Appliances:Images:Testing_x86:archlinux/standard"/>
+    </repository>
+    <!-- Arch Extra (includes KDE Plasma, most desktop packages) -->
+    <repository components="Arch_Extra_standard">
+        <source path="obs://Arch:Extra/standard"/>
+    </repository>
+    <!-- Arch Core (base system) -->
+    <repository components="Arch_Core_standard">
+        <source path="obs://Arch:Core/standard"/>
+    </repository>
+
+    <packages type="bootstrap">
+        <package name="filesystem"/>
+        <package name="pacman-mirrorlist"/>
+        <package name="archlinux-keyring"/>
+    </packages>
+
+    <packages type="image">
+        <!-- Base system -->
+        <package name="base"/>
+        <package name="linux"/>
+        <package name="linux-firmware"/>
+        <package name="dracut"/>
+        <package name="dracut-hooks"/>
+        <package name="udev"/>
+        <package name="systemd"/>
+        <package name="cpio"/>
+        <package name="binutils"/>
+        <package name="parted"/>
+        <package name="sudo"/>
+        <package name="openssh"/>
+
+        <!-- EFI boot -->
+        <package name="efibootmgr"/>
+        <package name="dosfstools"/>
+        <package name="grub"/>
+
+        <!-- Network -->
+        <package name="networkmanager"/>
+        <package name="dhclient"/>
+        <package name="systemd-resolvconf"/>
+
+        <!-- KDE Plasma desktop (minimal, Arch-style) -->
+        <package name="plasma-desktop"/>
+        <package name="kwin"/>
+        <package name="sddm"/>
+        <package name="breeze"/>
+        <package name="breeze-icons"/>
+        <package name="plasma-pa"/>
+        <package name="plasma-nm"/>
+        <package name="plasma-systemmonitor"/>
+        <package name="powerdevil"/>
+        <package name="bluedevil"/>
+        <package name="kscreen"/>
+        <package name="kdeplasma-addons"/>
+        <package name="systemsettings"/>
+
+        <!-- Core KDE apps (minimal set, Arch philosophy) -->
+        <package name="dolphin"/>
+        <package name="konsole"/>
+        <package name="kate"/>
+        <package name="gwenview"/>
+        <package name="ark"/>
+        <package name="spectacle"/>
+
+        <!-- Browser -->
+        <package name="firefox"/>
+
+        <!-- XDG integration -->
+        <package name="xdg-user-dirs"/>
+        <package name="xdg-desktop-portal-kde"/>
+
+        <!-- Audio (PipeWire, modern Arch default) -->
+        <package name="pipewire"/>
+        <package name="pipewire-pulse"/>
+        <package name="wireplumber"/>
+
+        <!-- Fonts -->
+        <package name="noto-fonts"/>
+        <package name="ttf-dejavu"/>
+
+        <!-- Boot splash -->
+        <package name="plymouth"/>
+
+        <!-- KIWI dracut modules -->
+        <package name="dracut-kiwi-oem-repart"/>
+        <package name="dracut-kiwi-lib"/>
+    </packages>
+
+    <!-- Additional package for live ISO profile -->
+    <packages type="image" profiles="live">
+        <package name="dracut-kiwi-live"/>
+    </packages>
+
+    <users>
+        <user password="!*" home="/root" name="root" groups="root"
+              pwdformat="encrypted"/>
+        <!-- Default user (password: forge) -->
+        <user password="$6$tForge$KzOH7M4QFUT3pBEQOjSEZl9dBp1VlWZYkMSzKiV57B/KUdvWxL1nckcVVxos9Q4kwnk92nvfLom/2evKqvJ6d/"
+              home="/home/forge" name="forge" groups="forge,wheel,video,audio,optical,storage"
+              pwdformat="encrypted" shell="/bin/bash"/>
+    </users>
+</image>
