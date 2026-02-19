@@ -43,7 +43,6 @@
             primary="true"
             flags="overlay"
             firmware="efi"
-            initrd_system="dracut"
             hybridpersistent="true"
             hybridpersistent_filesystem="ext4">
             <bootloader name="grub2" timeout="5"/>

@@ -43,7 +43,6 @@
             primary="true"
             flags="overlay"
             firmware="efi"
-            initrd_system="dracut"
             hybridpersistent="true"
             hybridpersistent_filesystem="ext4">
             <bootloader name="grub2" timeout="5"/>
@@ -58,7 +57,7 @@
     <!--
         Deepin 23 repo (community-packages.deepin.com/beige) is NOT
         mirrored on OBS. For local builds it is injected by
-        build-local.sh via --add-repo. OBS builds require an
+        build-local.sh via the add-repo flag. OBS builds require an
         admin-level DoD mirror; until one exists this base is
         local-only.
 

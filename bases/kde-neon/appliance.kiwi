@@ -43,7 +43,6 @@
             primary="true"
             flags="overlay"
             firmware="efi"
-            initrd_system="dracut"
             hybridpersistent="true"
             hybridpersistent_filesystem="ext4">
             <bootloader name="grub2" timeout="5"/>
@@ -58,7 +57,7 @@
     <!--
         KDE Neon User repo (archive.neon.kde.org/user) is NOT mirrored
         on OBS — no obs:// equivalent exists. For local builds it is
-        injected by build-local.sh via --add-repo. OBS builds require
+        injected by build-local.sh via the add-repo flag. OBS builds require
         an admin-level DoD mirror; until one exists this base is
         local-only.
     -->
