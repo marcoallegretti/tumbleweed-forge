@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    name: Validate KIWI descriptions
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        base: [ubuntu, debian]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install KIWI-ng
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-pip
+          pip3 install --user kiwi
+
+      - name: Assemble ${{ matrix.base }}
+        run: ci/scripts/assemble.sh ${{ matrix.base }}
+
+      - name: Validate KIWI schema
+        run: |
+          python3 -c "
+          from kiwi.xml_description import XMLDescription
+          d = XMLDescription('_build/${{ matrix.base }}/appliance.kiwi')
+          d.load()
+          print('Schema validation passed for ${{ matrix.base }}')
+          "
+
+      - name: Verify root overlay contents
+        run: |
+          echo "=== Root overlay for ${{ matrix.base }} ==="
+          find _build/${{ matrix.base }}/root -type f | sort
+          # Experience layer files must be present
+          test -f _build/${{ matrix.base }}/root/etc/os-release
+          test -f _build/${{ matrix.base }}/root/etc/dconf/db/local.d/00-opensuse-branding.conf
+          test -f _build/${{ matrix.base }}/root/boot/grub/themes/openSUSE/theme.txt
+          test -f _build/${{ matrix.base }}/root/opt/forge/apply-experience.sh
+          echo "All required experience overlay files present"
+
+      - name: Upload assembled description
+        if: github.event_name == 'push'
+        uses: actions/upload-artifact@v4
+        with:
+          name: kiwi-description-${{ matrix.base }}
+          path: _build/${{ matrix.base }}/
+          retention-days: 7
