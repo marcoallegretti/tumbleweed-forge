@@ -27,7 +27,7 @@ A cross-distribution image framework with openSUSE visual identity, built by **O
 Tumbleweed Forge demonstrates that openSUSE's infrastructure (OBS, KIWI-ng) can build and maintain **any** Linux distribution — not just RPM-based ones. The framework produces system images that:
 
 - **Look like openSUSE GNOME** — real branding ported from `glib2-branding-openSUSE`
-- **Feel familiar** — Dash-to-Dock, desktop ergonomics matching the base distribution
+- **Feel familiar** — native DE ergonomics matching each base (GNOME, DDE, etc.)
 - **Run any base underneath** — Ubuntu, Debian, and more via modular base profiles
 - **Build on OBS** — automatic rebuilds on upstream changes, GPG-signed, static download URLs
 
@@ -43,6 +43,9 @@ ci/scripts/build-local.sh ubuntu
 
 # Build Debian edition
 ci/scripts/build-local.sh debian
+
+# Build Deepin edition
+ci/scripts/build-local.sh deepin
 ```
 
 Test in QEMU:
@@ -85,6 +88,11 @@ bases/                       Base Layer (distro-specific)
     appliance.kiwi           KIWI image description
     config.sh                Debian-specific post-install
     _constraints             OBS build resources
+  deepin/                    Deepin 23 (beige)
+    appliance.kiwi           KIWI image description
+    config.sh                Deepin-specific post-install
+    forge.conf               DE declaration (FORGE_DE=dde)
+    _constraints             OBS build resources
 
 ci/                          Build Layer
   obs/                       OBS configurations
@@ -92,6 +100,7 @@ ci/                          Build Layer
     project-config.txt       Shared project config
     ubuntu/_service           Ubuntu source service
     debian/_service           Debian source service
+    deepin/_service           Deepin source service
   scripts/                   Build automation
     assemble.sh              Merge experience + base into KIWI build dir
     build-local.sh           Local KIWI build with repo injection
@@ -116,10 +125,11 @@ Two automatic trigger paths — zero manual intervention:
 
 | Base | Status | Description |
 |---|---|---|
-| **Ubuntu Noble 24.04** | ✅ Building on OBS | Snap-free, full GNOME desktop |
-| **Debian Bookworm 12** | ✅ Building on OBS | Stability reference |
-| Fedora | Planned (Phase 2) | Innovation reference |
-| Arch | Planned (Phase 2) | Advanced user segment |
+| **Ubuntu Noble 24.04** | ✅ Building on OBS | GNOME, snap-free |
+| **Debian Bookworm 12** | ✅ Building on OBS | GNOME, stability reference |
+| **Deepin 23 (beige)** | 🔧 Local builds | DDE (Deepin Desktop Environment) |
+| Fedora | Planned | GNOME, innovation reference |
+| Arch | Planned | Advanced user segment |
 
 ## Tech Stack
 
@@ -127,7 +137,7 @@ Two automatic trigger paths — zero manual intervention:
 |---|---|
 | **OBS** | Central orchestrator — builds, signs, publishes, auto-rebuilds |
 | **KIWI-ng** | Image builder — produces deployable `.raw` disk images |
-| **GNOME** | Desktop environment with openSUSE branding |
+| **GNOME / DDE** | Desktop environments with openSUSE branding |
 | **Agama** | Installer (future phase) |
 
 ## Downloads

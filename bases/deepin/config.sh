@@ -1,24 +1,10 @@
 #!/bin/bash
-# config.sh — Ubuntu Noble 24.04 base configuration
+# config.sh — Deepin 23 (beige) base configuration
 # Runs inside the image chroot during KIWI build.
 set -euxo pipefail
 
 #============================================
-# 1. Purge Snap completely
-#============================================
-systemctl disable snapd.service snapd.socket snapd.seeded.service 2>/dev/null || true
-apt-get purge -y snapd snap-confine 2>/dev/null || true
-rm -rf /snap /var/snap /var/lib/snapd /var/cache/snapd
-# Prevent snapd from being reinstalled
-mkdir -p /etc/apt/preferences.d
-cat > /etc/apt/preferences.d/no-snap.pref <<'SNAPEOF'
-Package: snapd
-Pin: release a=*
-Pin-Priority: -10
-SNAPEOF
-
-#============================================
-# 2. Set up default user
+# 1. Set up default user
 #============================================
 mkdir -p /home/forge
 chown forge:forge /home/forge
@@ -27,19 +13,19 @@ chmod 750 /home/forge
 chage -d 0 forge
 
 #============================================
-# 3. Enable services
+# 2. Enable services
 #============================================
-systemctl enable gdm3
+systemctl enable lightdm.service
 systemctl enable NetworkManager
 systemctl set-default graphical.target
 
 #============================================
-# 4. Locale and keyboard (Ubuntu method)
+# 3. Locale and keyboard
 #============================================
-locale-gen en_US.UTF-8
+sed -i 's/^# *en_US.UTF-8/en_US.UTF-8/' /etc/locale.gen
+locale-gen
 update-locale LANG=en_US.UTF-8
 
-# Keyboard setup via console-setup (Ubuntu doesn't use systemd keymaps)
 cat > /etc/default/keyboard <<KBEOF
 XKBMODEL="pc105"
 XKBLAYOUT="us"
@@ -50,15 +36,15 @@ KBEOF
 dpkg-reconfigure -f noninteractive keyboard-configuration 2>/dev/null || true
 
 #============================================
-# 5. Apply openSUSE Experience Layer
+# 4. Apply openSUSE Experience Layer
 #============================================
-export FORGE_DE=gnome
+export FORGE_DE=dde
 if [ -f /opt/forge/apply-experience.sh ]; then
     source /opt/forge/apply-experience.sh
 fi
 
 #============================================
-# 6. Clean up
+# 5. Clean up
 #============================================
 apt-get autoremove -y
 apt-get clean

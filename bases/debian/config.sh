@@ -38,6 +38,7 @@ dpkg-reconfigure -f noninteractive keyboard-configuration 2>/dev/null || true
 #============================================
 # 4. Apply openSUSE Experience Layer
 #============================================
+export FORGE_DE=gnome
 if [ -f /opt/forge/apply-experience.sh ]; then
     source /opt/forge/apply-experience.sh
 fi

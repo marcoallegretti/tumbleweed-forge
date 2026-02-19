@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        base: [ubuntu, debian]
+        base: [ubuntu, debian, deepin]
     steps:
       - uses: actions/checkout@v4
 
@@ -40,7 +40,6 @@ jobs:
           find _build/${{ matrix.base }}/root -type f | sort
           # Experience layer files must be present
           test -f _build/${{ matrix.base }}/root/etc/os-release
-          test -f _build/${{ matrix.base }}/root/etc/dconf/db/local.d/00-opensuse-branding.conf
           test -f _build/${{ matrix.base }}/root/boot/grub/themes/openSUSE/theme.txt
           test -f _build/${{ matrix.base }}/root/opt/forge/apply-experience.sh
           echo "All required experience overlay files present"

@@ -33,8 +33,14 @@ case "$BASE" in
             "--add-repo" "https://download.opensuse.org/repositories/Virtualization:/Appliances:/Builder/Debian_12,apt-deb,kiwi-builder,,Debian_12,false"
         )
         ;;
+    deepin)
+        REPOS=(
+            "--add-repo" "https://community-packages.deepin.com/beige,apt-deb,beige,main community,beige,false"
+            "--add-repo" "https://download.opensuse.org/repositories/Virtualization:/Appliances:/Builder/Debian_12,apt-deb,kiwi-builder,,Debian_12,false"
+        )
+        ;;
     *)
-        echo "Error: unknown base '$BASE'. Available: ubuntu, debian"
+        echo "Error: unknown base '$BASE'. Available: ubuntu, debian, deepin"
         exit 1
         ;;
 esac

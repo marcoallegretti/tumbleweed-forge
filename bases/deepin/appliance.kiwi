@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<image schemaversion="7.4" name="TumbleweedForge-DeepinEdition">
+    <description type="system">
+        <author>Tumbleweed Forge Team</author>
+        <contact>forge@example.org</contact>
+        <specification>
+            Tumbleweed Forge - Deepin Edition: Deepin Desktop Environment
+            with openSUSE visual identity, built by OBS + KIWI-ng.
+        </specification>
+    </description>
+
+    <preferences>
+        <version>0.1.0</version>
+        <packagemanager>apt</packagemanager>
+        <timezone>UTC</timezone>
+        <type
+            image="oem"
+            filesystem="ext4"
+            firmware="efi"
+            initrd_system="dracut"
+            bootpartition="false"
+            efipartsize="256"
+            devicepersistency="by-uuid">
+            <bootloader name="grub2" timeout="5"/>
+            <oemconfig>
+                <oem-resize>true</oem-resize>
+            </oemconfig>
+            <size unit="G">16</size>
+        </type>
+    </preferences>
+
+    <!--
+        Deepin 23 (beige) repos are NOT mirrored on OBS.
+        OBS builds require a DoD mirror (admin-only) or community project.
+        For local builds: repos are injected via build-local.sh.
+        For KIWI validation: at least one repo element is required.
+    -->
+    <repository type="apt-deb" distribution="beige"
+                components="main community"
+                repository_gpgcheck="false">
+        <source path="https://community-packages.deepin.com/beige"/>
+    </repository>
+
+    <packages type="bootstrap">
+        <package name="ca-certificates"/>
+        <package name="deepin-keyring"/>
+    </packages>
+
+    <packages type="image">
+        <!-- Kernel -->
+        <package name="linux-image-deepin-amd64"/>
+
+        <!-- Core system -->
+        <package name="init"/>
+        <package name="dracut"/>
+        <package name="grub-efi-amd64-bin"/>
+        <package name="grub-pc-bin"/>
+        <package name="grub2-common"/>
+        <package name="fdisk"/>
+        <package name="xz-utils"/>
+        <package name="binutils"/>
+        <package name="usrmerge"/>
+        <package name="usr-is-merged"/>
+        <package name="sudo"/>
+        <package name="locales"/>
+        <package name="console-setup"/>
+        <package name="tzdata"/>
+        <package name="gnupg"/>
+        <package name="dbus"/>
+        <package name="libpam-runtime"/>
+        <package name="efibootmgr"/>
+
+        <!-- Network -->
+        <package name="iproute2"/>
+        <package name="ifupdown"/>
+        <package name="netbase"/>
+        <package name="net-tools"/>
+        <package name="network-manager"/>
+
+        <!-- DDE - Deepin Desktop Environment -->
+        <package name="deepin-desktop-environment-core"/>
+        <package name="deepin-desktop-environment-base"/>
+        <package name="dde-session"/>
+        <package name="dde-session-shell"/>
+        <package name="dde-shell"/>
+        <package name="dde-desktop"/>
+        <package name="dde-control-center"/>
+        <package name="dde-file-manager"/>
+        <package name="dde-launcher"/>
+        <package name="dde-appearance"/>
+        <package name="startdde"/>
+        <package name="deepin-kwin-x11"/>
+
+        <!-- Display manager -->
+        <package name="lightdm"/>
+
+        <!-- DDE theming -->
+        <package name="deepin-icon-theme"/>
+        <package name="deepin-gtk-theme"/>
+        <package name="deepin-sound-theme"/>
+        <package name="deepin-wallpapers"/>
+        <package name="deepin-default-settings"/>
+
+        <!-- Deepin applications -->
+        <package name="deepin-terminal"/>
+        <package name="deepin-editor"/>
+        <package name="deepin-image-viewer"/>
+        <package name="deepin-calculator"/>
+        <package name="deepin-system-monitor"/>
+
+        <!-- Session essentials -->
+        <package name="xdg-user-dirs"/>
+        <package name="dbus-user-session"/>
+
+        <!-- Boot splash -->
+        <package name="plymouth"/>
+        <package name="plymouth-themes"/>
+
+        <!-- KIWI dracut modules (required for oem image type) -->
+        <package name="dracut-kiwi-oem-repart"/>
+        <package name="dracut-kiwi-lib"/>
+
+        <!-- Hardware -->
+        <package name="firmware-linux-free"/>
+    </packages>
+
+    <users>
+        <user password="!*" home="/root" name="root" groups="root"
+              pwdformat="encrypted"/>
+        <user password="$6$tForge$KzOH7M4QFUT3pBEQOjSEZl9dBp1VlWZYkMSzKiV57B/KUdvWxL1nckcVVxos9Q4kwnk92nvfLom/2evKqvJ6d/"
+              home="/home/forge" name="forge" groups="forge,sudo,adm,cdrom,dip,plugdev"
+              pwdformat="encrypted" shell="/bin/bash"/>
+    </users>
+</image>

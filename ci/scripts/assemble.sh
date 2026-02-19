@@ -29,10 +29,10 @@ cp "$BASE_DIR/appliance.kiwi" "$BUILD_DIR/"
 cp "$BASE_DIR/config.sh" "$BUILD_DIR/"
 [ -f "$BASE_DIR/_constraints" ] && cp "$BASE_DIR/_constraints" "$BUILD_DIR/"
 
-# Create root overlay by merging experience overlay + base overlay
+# Create root overlay by merging experience + base overlays
 echo "=== Merging root overlay ==="
 mkdir -p "$BUILD_DIR/root"
-# Experience layer first (shared branding, dconf, GRUB, Plymouth, etc.)
+# Experience layer (GRUB, Plymouth, wallpapers, os-release, dconf, etc.)
 cp -a "$EXPERIENCE_DIR/overlay/." "$BUILD_DIR/root/"
 # Base-specific overlay on top (overrides experience if conflicts)
 if [ -d "$BASE_DIR/root" ]; then
