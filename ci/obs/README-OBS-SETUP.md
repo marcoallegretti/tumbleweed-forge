@@ -31,6 +31,7 @@ This creates/updates the project, sets project config, creates the package, and 
 | Debian | ✅ |
 | Deepin | 🔧 local-only (external repo not mirrored on OBS) |
 | KDE Neon | 🔧 local-only (external repo not mirrored on OBS) |
+| Arch | ✅ (repos available: `Arch:Core`, `Arch:Extra`) |
 
 ## Manual Setup
 
@@ -47,6 +48,7 @@ Key settings in the project meta:
 - **`block="local"`** — only block on packages within this project
 - **`Virtualization:Appliances:Builder/*`** — provides KIWI-ng build tooling
 - **`Ubuntu:24.04` and `Debian:12`** — mirrored distro package sources available on OBS
+- **`Arch:Core` and `Arch:Extra`** — Arch Linux repos available on OBS via DoD
 
 > **Note**: Some upstream repos (for example KDE Neon and Deepin) are not available as OBS projects. In a home project, direct URLs in KIWI and DoD `<download .../>` project entries are restricted (see "External Repo Limitation" below).
 
@@ -69,6 +71,7 @@ Use a per-base package name:
 ```bash
 osc meta pkg -e home:Mighty23:TumbleweedForge tumbleweed-forge-ubuntu
 osc meta pkg -e home:Mighty23:TumbleweedForge tumbleweed-forge-debian
+osc meta pkg -e home:Mighty23:TumbleweedForge tumbleweed-forge-arch
 ```
 
 ### Step 4: Upload the Source Service
