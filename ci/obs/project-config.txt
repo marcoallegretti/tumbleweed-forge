@@ -1,5 +1,7 @@
-# -- Tumbleweed Forge Debian Edition Project Configuration --
+# -- Tumbleweed Forge Project Configuration --
 # Applied via: osc meta prjconf -e home:Mighty23:TumbleweedForge
+# Shared across all DEB-based editions (Ubuntu, Debian)
+# Based on: Virtualization:Appliances:Images:Testing_x86:{ubuntu,debian}
 
 %if "%_repository" == "images"
 Type: kiwi
@@ -21,10 +23,13 @@ support: rsync
 support: fdisk
 support: xzdec
 
-# Debian Bookworm package preferences
+# Package preferences (harmless if package absent on a given base)
+Prefer: python3-pyxattr
 Prefer: grub-efi-amd64
 Prefer: grub-common
 Prefer: libc-bin
 Prefer: network-manager
 Prefer: gdm3
+Prefer: fonts-ubuntu
+Prefer: libglib2.0-0t64
 %endif

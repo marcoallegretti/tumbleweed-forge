@@ -9,10 +9,11 @@ OBS_USER="${2:?Usage: $0 <base> <OBS_USERNAME>}"
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_ROOT="$(dirname "$(dirname "$SCRIPT_DIR")")"
-OBS_DIR="$PROJECT_ROOT/ci/obs/$BASE"
+OBS_DIR="$PROJECT_ROOT/ci/obs"
+BASE_OBS_DIR="$OBS_DIR/$BASE"
 BASE_DIR="$PROJECT_ROOT/bases/$BASE"
 
-[ -d "$OBS_DIR" ] || { echo "Error: OBS config not found at $OBS_DIR"; exit 1; }
+[ -f "$BASE_OBS_DIR/_service" ] || { echo "Error: _service not found at $BASE_OBS_DIR"; exit 1; }
 
 # Derive project/package names from base
 PROJECT="home:${OBS_USER}:TumbleweedForge"
@@ -35,7 +36,7 @@ EOF
 echo "=== Uploading _service and _constraints ==="
 TMPDIR=$(mktemp -d)
 osc checkout "$PROJECT" "$PKG" -o "$TMPDIR/$PKG"
-cp "$OBS_DIR/_service" "$TMPDIR/$PKG/_service"
+cp "$BASE_OBS_DIR/_service" "$TMPDIR/$PKG/_service"
 [ -f "$BASE_DIR/_constraints" ] && cp "$BASE_DIR/_constraints" "$TMPDIR/$PKG/_constraints"
 pushd "$TMPDIR/$PKG"
 osc add _service _constraints 2>/dev/null || true
