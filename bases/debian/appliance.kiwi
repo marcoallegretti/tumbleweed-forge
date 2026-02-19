@@ -55,7 +55,7 @@
     </packages>
 
     <packages type="image">
-        <!-- Core system -->
+        <!-- Core system (matches KIWI reference test-image-live-disk) -->
         <package name="linux-image-amd64"/>
         <package name="init"/>
         <package name="dracut"/>
@@ -84,43 +84,68 @@
         <package name="net-tools"/>
         <package name="network-manager"/>
 
-        <!-- GNOME Desktop (core) -->
+        <!--
+            GNOME Desktop — matches Debian's gnome-core metapackage deps.
+            This is what `tasksel install gnome-desktop` pulls in.
+            Preserves the authentic Debian GNOME experience.
+        -->
         <package name="gnome-shell"/>
+        <package name="gnome-shell-extensions"/>
         <package name="gnome-session"/>
+        <package name="gnome-settings-daemon"/>
         <package name="gdm3"/>
         <package name="gnome-terminal"/>
         <package name="nautilus"/>
         <package name="gnome-control-center"/>
-        <package name="gnome-tweaks"/>
         <package name="gnome-text-editor"/>
         <package name="gnome-system-monitor"/>
         <package name="gnome-disk-utility"/>
         <package name="gnome-software"/>
         <package name="gnome-calculator"/>
+        <package name="gnome-characters"/>
+        <package name="gnome-contacts"/>
+        <package name="gnome-font-viewer"/>
+        <package name="gnome-logs"/>
+        <package name="gnome-menus"/>
+        <package name="gnome-online-accounts"/>
+        <package name="gnome-sushi"/>
+        <package name="gnome-user-docs"/>
+        <package name="gnome-user-share"/>
+        <package name="gnome-themes-extra"/>
+        <package name="gnome-backgrounds"/>
         <package name="evince"/>
         <package name="eog"/>
-        <package name="file-roller"/>
+        <package name="totem"/>
+        <package name="baobab"/>
+        <package name="yelp"/>
+        <package name="zenity"/>
         <package name="fonts-cantarell"/>
         <package name="adwaita-icon-theme"/>
-        <package name="gnome-backgrounds"/>
         <package name="dconf-cli"/>
+        <package name="dconf-gsettings-backend"/>
 
-        <!-- Apps referenced in shell favorites -->
+        <!-- Default browser (Debian ships ESR) -->
         <package name="firefox-esr"/>
 
         <!-- File manager backends -->
-        <package name="gvfs"/>
         <package name="gvfs-backends"/>
+        <package name="gvfs-fuse"/>
 
-        <!-- Audio (PipeWire) -->
-        <package name="pipewire"/>
-        <package name="wireplumber"/>
+        <!-- Audio -->
+        <package name="pipewire-audio"/>
+        <package name="sound-theme-freedesktop"/>
 
         <!-- Session essentials -->
         <package name="gnome-keyring"/>
+        <package name="libpam-gnome-keyring"/>
         <package name="xdg-user-dirs"/>
         <package name="xdg-user-dirs-gtk"/>
+        <package name="xdg-desktop-portal-gnome"/>
         <package name="dbus-user-session"/>
+        <package name="tracker"/>
+
+        <!-- Printing -->
+        <package name="system-config-printer-common"/>
 
         <!-- Boot splash -->
         <package name="plymouth"/>

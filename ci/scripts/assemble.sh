@@ -32,7 +32,7 @@ cp "$BASE_DIR/config.sh" "$BUILD_DIR/"
 # Create root overlay by merging experience + base overlays
 echo "=== Merging root overlay ==="
 mkdir -p "$BUILD_DIR/root"
-# Experience layer (GRUB, Plymouth, wallpapers, os-release, dconf, etc.)
+# Experience layer (GRUB theme, Plymouth, wallpapers, os-release)
 cp -a "$EXPERIENCE_DIR/overlay/." "$BUILD_DIR/root/"
 # Base-specific overlay on top (overrides experience if conflicts)
 if [ -d "$BASE_DIR/root" ]; then

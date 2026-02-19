@@ -23,7 +23,6 @@ SNAPEOF
 mkdir -p /home/forge
 chown forge:forge /home/forge
 chmod 750 /home/forge
-# Force password change on first login
 chage -d 0 forge
 
 #============================================
@@ -34,12 +33,11 @@ systemctl enable NetworkManager
 systemctl set-default graphical.target
 
 #============================================
-# 4. Locale and keyboard (Ubuntu method)
+# 4. Locale and keyboard
 #============================================
 locale-gen en_US.UTF-8
 update-locale LANG=en_US.UTF-8
 
-# Keyboard setup via console-setup (Ubuntu doesn't use systemd keymaps)
 cat > /etc/default/keyboard <<KBEOF
 XKBMODEL="pc105"
 XKBLAYOUT="us"
@@ -50,15 +48,74 @@ KBEOF
 dpkg-reconfigure -f noninteractive keyboard-configuration 2>/dev/null || true
 
 #============================================
-# 5. Apply openSUSE Experience Layer
+# 5. GNOME desktop configuration (Ubuntu-native)
 #============================================
-export FORGE_DE=gnome
+# Create dconf identity if not present (OBS builds lack base overlay)
+if [ ! -f /etc/dconf/db/local.d/00-opensuse-branding.conf ]; then
+    mkdir -p /etc/dconf/db/local.d /etc/dconf/profile
+    cat > /etc/dconf/db/local.d/00-opensuse-branding.conf <<'DCONF_ID'
+# Tumbleweed Forge identity for Ubuntu edition
+[org/gnome/desktop/background]
+picture-uri='file:///usr/share/wallpapers/openSUSE-default.png'
+picture-uri-dark='file:///usr/share/wallpapers/openSUSE-default-dark.png'
+picture-options='zoom'
+
+[org/gnome/desktop/screensaver]
+picture-uri='file:///usr/share/wallpapers/openSUSE-default.png'
+picture-options='zoom'
+
+[org/gnome/login-screen]
+logo='/usr/share/gdm/greeter/images/distributor.svg'
+DCONF_ID
+    cat > /etc/dconf/profile/user <<'DCONF_PROF'
+user-db:user
+system-db:local
+DCONF_PROF
+fi
+
+# Dash-to-Dock ergonomics if not present from overlay
+if [ ! -f /etc/dconf/db/local.d/01-ubuntu-ergonomics.conf ]; then
+    cat > /etc/dconf/db/local.d/01-ubuntu-ergonomics.conf <<'DOCK_CONF'
+# Ubuntu-style ergonomics: Dash-to-Dock on left
+[org/gnome/shell/extensions/dash-to-dock]
+dock-position='LEFT'
+dash-max-icon-size=40
+background-opacity=0.7
+transparency-mode='FIXED'
+custom-theme-shrink=true
+running-indicator-style='DOTS'
+DOCK_CONF
+fi
+
+# Enable Dash-to-Dock extension if installed
+if [ -d /usr/share/gnome-shell/extensions/ubuntu-dock@ubuntu.com ]; then
+    DOCK_ID="ubuntu-dock@ubuntu.com"
+elif [ -d /usr/share/gnome-shell/extensions/dash-to-dock@micxgx.gmail.com ]; then
+    DOCK_ID="dash-to-dock@micxgx.gmail.com"
+else
+    DOCK_ID=""
+fi
+
+if [ -n "$DOCK_ID" ]; then
+    cat >> /etc/dconf/db/local.d/01-ubuntu-ergonomics.conf <<DOCKEOF
+
+[org/gnome/shell]
+enabled-extensions=['${DOCK_ID}']
+DOCKEOF
+fi
+
+# Rebuild dconf database
+dconf update
+
+#============================================
+# 6. Apply Forge boot identity (GRUB + Plymouth)
+#============================================
 if [ -f /opt/forge/apply-experience.sh ]; then
     source /opt/forge/apply-experience.sh
 fi
 
 #============================================
-# 6. Clean up
+# 7. Clean up
 #============================================
 apt-get autoremove -y
 apt-get clean

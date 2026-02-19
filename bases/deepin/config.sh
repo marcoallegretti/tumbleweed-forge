@@ -1,6 +1,8 @@
 #!/bin/bash
 # config.sh — Deepin 23 (beige) base configuration
 # Runs inside the image chroot during KIWI build.
+#
+# Philosophy: native DDE experience with Forge boot identity.
 set -euxo pipefail
 
 #============================================
@@ -9,7 +11,6 @@ set -euxo pipefail
 mkdir -p /home/forge
 chown forge:forge /home/forge
 chmod 750 /home/forge
-# Force password change on first login
 chage -d 0 forge
 
 #============================================
@@ -36,15 +37,27 @@ KBEOF
 dpkg-reconfigure -f noninteractive keyboard-configuration 2>/dev/null || true
 
 #============================================
-# 4. Apply openSUSE Experience Layer
+# 4. DDE desktop configuration
 #============================================
-export FORGE_DE=dde
+# Set Forge wallpaper as DDE default
+if [ -f /usr/share/wallpapers/openSUSE-default.png ]; then
+    mkdir -p /etc/deepin/dde-appearance
+    cat > /etc/deepin/dde-appearance/override.json <<'DDEEOF'
+{
+    "wallpaper": "/usr/share/wallpapers/openSUSE-default.png"
+}
+DDEEOF
+fi
+
+#============================================
+# 5. Apply Forge boot identity (GRUB + Plymouth)
+#============================================
 if [ -f /opt/forge/apply-experience.sh ]; then
     source /opt/forge/apply-experience.sh
 fi
 
 #============================================
-# 5. Clean up
+# 6. Clean up
 #============================================
 apt-get autoremove -y
 apt-get clean
