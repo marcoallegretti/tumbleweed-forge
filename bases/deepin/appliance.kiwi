@@ -29,13 +29,14 @@
         </type>
     </preferences>
 
-    <!--
-        Deepin 23 (beige) repos are NOT mirrored on OBS.
-        OBS builds require a DoD mirror (admin-only) or community project.
-        For local builds: repos are injected via build-local.sh.
-        For KIWI validation: at least one repo element is required.
-    -->
-    <repository type="apt-deb" distribution="beige"
+    <!-- KIWI dracut modules + build deps -->
+    <repository type="apt-deb" alias="kiwi-appliance-builder" priority="1"
+                repository_gpgcheck="false" architectures="amd64">
+        <source path="obs://Virtualization:Appliances:Builder/Debian_12"/>
+    </repository>
+    <!-- Deepin 23 (beige) community packages -->
+    <repository type="apt-deb" alias="Deepin-Beige"
+                distribution="beige"
                 components="main community"
                 repository_gpgcheck="false">
         <source path="https://community-packages.deepin.com/beige"/>
