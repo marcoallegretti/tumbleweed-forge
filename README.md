@@ -41,6 +41,9 @@ Prerequisites: `kiwi-ng` installed, root/sudo access.
 # Build Ubuntu edition
 ci/scripts/build-local.sh ubuntu
 
+# Build Ubuntu edition (native UX)
+ci/scripts/build-local.sh ubuntu-native
+
 # Build Debian edition
 ci/scripts/build-local.sh debian
 
@@ -91,6 +94,10 @@ bases/                       Base Layer (distro-specific)
     appliance.kiwi           KIWI image description
     config.sh                GNOME + Dash-to-Dock + Forge identity
     root/                    dconf branding, GDM logo, Dock config
+    _constraints             OBS build resources
+  ubuntu-native/             Ubuntu Noble 24.04 (native UX)
+    appliance.kiwi           Stock Ubuntu identity and defaults (Snap enabled)
+    config.sh                Minimal enablement only (no Forge boot identity)
     _constraints             OBS build resources
   debian/                    Debian Bookworm 12
     appliance.kiwi           Full GNOME matching task-gnome-desktop
@@ -147,6 +154,7 @@ Two automatic trigger paths — zero manual intervention:
 | Base | Status | Description |
 |---|---|---|
 | **Ubuntu Noble 24.04** | ✅ Building on OBS | GNOME, snap-free |
+| **Ubuntu Native UX (Noble)** | ✅ Building on OBS | Stock Ubuntu identity + Snap |
 | **Debian Bookworm 12** | ✅ Building on OBS | GNOME, stability reference |
 | **Deepin 23 (beige)** | 🔧 Local builds | DDE (Deepin Desktop Environment), external repo not mirrored on OBS |
 | **KDE Neon** | 🔧 Local builds | KDE Plasma 6 (latest stable on Ubuntu LTS), external repo not mirrored on OBS |
@@ -192,6 +200,7 @@ Built images are published on the openSUSE Build Service:
 | Edition | OBS Package | Download |
 |---|---|---|
 | Ubuntu | [tumbleweed-forge-ubuntu](https://build.opensuse.org/package/show/home:Mighty23:TumbleweedForge/tumbleweed-forge-ubuntu) | [images](https://download.opensuse.org/repositories/home:/Mighty23:/TumbleweedForge/images/) |
+| Ubuntu (native UX) | _Pending OBS package setup_ | — |
 | Debian | [tumbleweed-forge-debian](https://build.opensuse.org/package/show/home:Mighty23:TumbleweedForge/tumbleweed-forge-debian) | [images](https://download.opensuse.org/repositories/home:/Mighty23:/TumbleweedForge/images/) |
 | Deepin | _Not on OBS (local builds only)_ | — |
 | KDE Neon | _Not on OBS (local builds only)_ | — |

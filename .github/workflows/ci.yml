@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        base: [ubuntu, debian, deepin, kde-neon, arch]
+        base: [ubuntu, ubuntu-native, debian, deepin, kde-neon, arch]
     steps:
       - uses: actions/checkout@v4
 
@@ -38,11 +38,15 @@ jobs:
         run: |
           echo "=== Root overlay for ${{ matrix.base }} ==="
           find _build/${{ matrix.base }}/root -type f | sort
-          # Experience layer files must be present
-          test -f _build/${{ matrix.base }}/root/etc/os-release
-          test -f _build/${{ matrix.base }}/root/boot/grub/themes/openSUSE/theme.txt
-          test -f _build/${{ matrix.base }}/root/opt/forge/apply-experience.sh
-          echo "All required experience overlay files present"
+          if [ "${{ matrix.base }}" != "ubuntu-native" ]; then
+            # Experience layer files must be present
+            test -f _build/${{ matrix.base }}/root/etc/os-release
+            test -f _build/${{ matrix.base }}/root/boot/grub/themes/openSUSE/theme.txt
+            test -f _build/${{ matrix.base }}/root/opt/forge/apply-experience.sh
+            echo "All required experience overlay files present"
+          else
+            echo "ubuntu-native skips Forge experience overlay by design"
+          fi
 
       - name: Upload assembled description
         if: github.event_name == 'push'

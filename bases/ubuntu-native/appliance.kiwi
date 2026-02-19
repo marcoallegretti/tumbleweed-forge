@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<image schemaversion="7.4" name="Ubuntu-Noble-Native">
+    <description type="system">
+        <author>Tumbleweed Forge Team</author>
+        <contact>forge@example.org</contact>
+        <specification>
+            Ubuntu Noble 24.04 (native UX): system image with stock Ubuntu
+            identity and defaults. Built via KIWI-ng.
+        </specification>
+    </description>
+
+    <profiles>
+        <profile name="disk" description="OEM installable disk image"/>
+        <profile name="live" description="Live ISO hybrid image"/>
+    </profiles>
+
+    <preferences>
+        <version>0.1.0</version>
+        <packagemanager>apt</packagemanager>
+        <timezone>UTC</timezone>
+    </preferences>
+
+    <preferences profiles="disk">
+        <type
+            image="oem"
+            filesystem="ext4"
+            firmware="efi"
+            initrd_system="dracut"
+            bootpartition="false"
+            efipartsize="256"
+            devicepersistency="by-uuid">
+            <bootloader name="grub2" timeout="5"/>
+            <oemconfig>
+                <oem-resize>true</oem-resize>
+            </oemconfig>
+            <size unit="G">15</size>
+        </type>
+    </preferences>
+
+    <preferences profiles="live">
+        <type
+            image="iso"
+            primary="true"
+            flags="overlay"
+            firmware="efi"
+            hybridpersistent="true"
+            hybridpersistent_filesystem="ext4">
+            <bootloader name="grub2" timeout="5"/>
+        </type>
+    </preferences>
+
+    <repository type="apt-deb" alias="kiwi-appliance-builder" priority="1"
+                repository_gpgcheck="false" architectures="amd64">
+        <source path="obs://Virtualization:Appliances:Builder/xUbuntu_24.04"/>
+    </repository>
+    <repository type="apt-deb" alias="Ubuntu-Noble-Universe"
+                repository_gpgcheck="false">
+        <source path="obs://Ubuntu:24.04/universe"/>
+    </repository>
+    <repository type="apt-deb" alias="Ubuntu-Noble"
+                repository_gpgcheck="false">
+        <source path="obs://Ubuntu:24.04/standard"/>
+    </repository>
+
+    <packages type="bootstrap">
+        <package name="apt"/>
+        <package name="apt-utils"/>
+        <package name="debconf"/>
+        <package name="dpkg"/>
+        <package name="base-files"/>
+        <package name="base-passwd"/>
+        <package name="bash"/>
+        <package name="coreutils"/>
+        <package name="diffutils"/>
+        <package name="findutils"/>
+        <package name="grep"/>
+        <package name="gzip"/>
+        <package name="hostname"/>
+        <package name="init-system-helpers"/>
+        <package name="login"/>
+        <package name="mount"/>
+        <package name="passwd"/>
+        <package name="sed"/>
+        <package name="tar"/>
+        <package name="util-linux"/>
+        <package name="libc-bin"/>
+        <package name="mawk"/>
+    </packages>
+
+    <packages type="image">
+        <package name="linux-generic"/>
+        <package name="systemd"/>
+        <package name="systemd-sysv"/>
+        <package name="dracut"/>
+        <package name="grub-efi-amd64"/>
+        <package name="grub-pc-bin"/>
+        <package name="grub-common"/>
+        <package name="efibootmgr"/>
+        <package name="shim-signed"/>
+        <package name="fdisk"/>
+        <package name="sudo"/>
+        <package name="locales"/>
+        <package name="console-setup"/>
+        <package name="tzdata"/>
+        <package name="iproute2"/>
+        <package name="isc-dhcp-client"/>
+        <package name="network-manager"/>
+
+        <package name="ubuntu-desktop"/>
+
+        <package name="dracut-kiwi-oem-repart"/>
+        <package name="dracut-kiwi-lib"/>
+
+        <package name="linux-firmware"/>
+    </packages>
+
+    <packages type="image" profiles="live">
+        <package name="dracut-kiwi-live"/>
+    </packages>
+
+    <users>
+        <user password="!*" home="/root" name="root" groups="root"
+              pwdformat="encrypted"/>
+        <user password="$6$tForge$KzOH7M4QFUT3pBEQOjSEZl9dBp1VlWZYkMSzKiV57B/KUdvWxL1nckcVVxos9Q4kwnk92nvfLom/2evKqvJ6d/"
+              home="/home/forge" name="forge" groups="forge,sudo,adm,cdrom,dip,plugdev"
+              pwdformat="encrypted" shell="/bin/bash"/>
+    </users>
+</image>

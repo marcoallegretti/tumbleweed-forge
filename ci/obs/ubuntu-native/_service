@@ -1,0 +1,9 @@
+<services>
+  <service name="obs_scm">
+    <param name="scm">git</param>
+    <param name="url">https://github.com/marcoallegretti/tumbleweed-forge.git</param>
+    <param name="revision">main</param>
+    <param name="extract">bases/ubuntu-native/appliance.kiwi</param>
+    <param name="extract">bases/ubuntu-native/config.sh</param>
+  </service>
+</services>

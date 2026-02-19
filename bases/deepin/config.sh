@@ -36,6 +36,27 @@ BACKSPACE="guess"
 KBEOF
 dpkg-reconfigure -f noninteractive keyboard-configuration 2>/dev/null || true
 
+cat > /etc/os-release <<'OSREL'
+PRETTY_NAME="Tumbleweed Forge - Deepin Edition"
+NAME="Tumbleweed Forge"
+VERSION_ID="23"
+VERSION="23 [Forge]"
+ID=tumbleweed-forge
+ID_LIKE="debian"
+HOME_URL="https://github.com/marcoallegretti/tumbleweed-forge"
+SUPPORT_URL="https://github.com/marcoallegretti/tumbleweed-forge/issues"
+BUG_REPORT_URL="https://github.com/marcoallegretti/tumbleweed-forge/issues"
+OSREL
+
+cat > /etc/issue <<'ISSUE'
+Tumbleweed Forge - Deepin Edition \n \l
+
+ISSUE
+
+cat > /etc/issue.net <<'ISSUENET'
+Tumbleweed Forge - Deepin Edition
+ISSUENET
+
 #============================================
 # 4. DDE desktop configuration
 #============================================

@@ -39,6 +39,29 @@ echo "KEYMAP=us" > /etc/vconsole.conf
 echo "tumbleweed-forge" > /etc/hostname
 
 #======================================
+# System identity
+#--------------------------------------
+cat > /etc/os-release << 'OSREL'
+PRETTY_NAME="Tumbleweed Forge - Arch Edition"
+NAME="Tumbleweed Forge"
+VERSION_ID="rolling"
+ID=tumbleweed-forge
+ID_LIKE="arch"
+HOME_URL="https://github.com/marcoallegretti/tumbleweed-forge"
+SUPPORT_URL="https://github.com/marcoallegretti/tumbleweed-forge/issues"
+BUG_REPORT_URL="https://github.com/marcoallegretti/tumbleweed-forge/issues"
+OSREL
+
+cat > /etc/issue << 'ISSUE'
+Tumbleweed Forge - Arch Edition \n \l
+
+ISSUE
+
+cat > /etc/issue.net << 'ISSUENET'
+Tumbleweed Forge - Arch Edition
+ISSUENET
+
+#======================================
 # Sudo for wheel group (Arch convention)
 #--------------------------------------
 echo "%wheel ALL=(ALL:ALL) ALL" > /etc/sudoers.d/wheel
