@@ -26,8 +26,8 @@ A cross-distribution image framework with openSUSE visual identity, built by **O
 
 Tumbleweed Forge demonstrates that openSUSE's infrastructure (OBS, KIWI-ng) can build and maintain **any** Linux distribution — not just RPM-based ones. The framework produces system images that:
 
-- **Look like openSUSE GNOME** — real branding ported from `glib2-branding-openSUSE`
-- **Feel familiar** — native DE ergonomics matching each base (GNOME, DDE, etc.)
+- **Boot like openSUSE** — GRUB theme, Plymouth splash, system identity from openSUSE
+- **Feel like the native distro** — each edition preserves its desktop defaults (vanilla GNOME, Ubuntu Dock, DDE)
 - **Run any base underneath** — Ubuntu, Debian, and more via modular base profiles
 - **Build on OBS** — automatic rebuilds on upstream changes, GPG-signed, static download URLs
 
@@ -67,31 +67,30 @@ ci/scripts/obs-setup.sh ubuntu Mighty23
 Tumbleweed Forge uses a **three-layer model** — see [docs/architecture.md](docs/architecture.md) for details.
 
 ```
-experience/                  openSUSE Experience Layer (distro-agnostic)
+experience/                  Boot Identity Layer (universal)
   overlay/                   Files overlaid onto every image
     boot/grub/themes/        GRUB openSUSE theme
-    etc/dconf/               GNOME dconf overrides
     etc/os-release           Forge identity
-    usr/share/wallpapers/    openSUSE wallpapers
+    etc/issue                Login banner
+    usr/share/wallpapers/    openSUSE wallpapers (available assets)
     usr/share/plymouth/      Boot splash watermark
-    opt/forge/               apply-experience.sh
-  apply-experience.sh        Shared config script (dconf, GRUB, Plymouth)
-  README.md                  Branding architecture
-  upstream-sources.md        Asset provenance
+    opt/forge/               apply-experience.sh (GRUB + Plymouth)
+  apply-experience.sh        Master copy of boot identity script
 
 bases/                       Base Layer (distro-specific)
   ubuntu/                    Ubuntu Noble 24.04 LTS
     appliance.kiwi           KIWI image description
-    config.sh                Ubuntu-specific post-install
+    config.sh                GNOME + Dash-to-Dock + Forge identity
+    root/                    dconf branding, GDM logo, Dock config
     _constraints             OBS build resources
   debian/                    Debian Bookworm 12
-    appliance.kiwi           KIWI image description
-    config.sh                Debian-specific post-install
+    appliance.kiwi           Packages matching gnome-core metapackage
+    config.sh                Vanilla GNOME + wallpaper identity only
+    root/                    Minimal dconf (wallpaper), GDM logo
     _constraints             OBS build resources
   deepin/                    Deepin 23 (beige)
     appliance.kiwi           KIWI image description
-    config.sh                Deepin-specific post-install
-    forge.conf               DE declaration (FORGE_DE=dde)
+    config.sh                DDE + LightDM + wallpaper override
     _constraints             OBS build resources
 
 ci/                          Build Layer
@@ -137,7 +136,7 @@ Two automatic trigger paths — zero manual intervention:
 |---|---|
 | **OBS** | Central orchestrator — builds, signs, publishes, auto-rebuilds |
 | **KIWI-ng** | Image builder — produces deployable `.raw` disk images |
-| **GNOME / DDE** | Desktop environments with openSUSE branding |
+| **GNOME / DDE** | Native desktop environments per distro edition |
 | **Agama** | Installer (future phase) |
 
 ## Downloads
