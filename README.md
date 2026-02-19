@@ -47,7 +47,8 @@ ci/scripts/build-local.sh debian
 
 Test in QEMU:
 ```bash
-ci/scripts/test-image.sh
+ci/scripts/test-image.sh /path/to/image.raw              # headless smoke test
+ci/scripts/test-image.sh /path/to/image.raw --interactive # graphical
 ```
 
 ### OBS Build
@@ -79,7 +80,6 @@ bases/                       Base Layer (distro-specific)
   ubuntu/                    Ubuntu Noble 24.04 LTS
     appliance.kiwi           KIWI image description
     config.sh                Ubuntu-specific post-install
-    root/                    Ubuntu-specific overlay (no-snap.pref)
     _constraints             OBS build resources
   debian/                    Debian Bookworm 12
     appliance.kiwi           KIWI image description
@@ -87,9 +87,11 @@ bases/                       Base Layer (distro-specific)
     _constraints             OBS build resources
 
 ci/                          Build Layer
-  obs/                       Per-base OBS configurations
-    ubuntu/                  project-meta, project-config, _service
-    debian/                  project-meta, project-config, _service
+  obs/                       OBS configurations
+    project-meta.xml         Shared project metadata
+    project-config.txt       Shared project config
+    ubuntu/_service           Ubuntu source service
+    debian/_service           Debian source service
   scripts/                   Build automation
     assemble.sh              Merge experience + base into KIWI build dir
     build-local.sh           Local KIWI build with repo injection
@@ -114,8 +116,8 @@ Two automatic trigger paths — zero manual intervention:
 
 | Base | Status | Description |
 |---|---|---|
-| **Ubuntu Noble 24.04** | Building on OBS | Snap-free, full GNOME desktop |
-| **Debian Bookworm 12** | In development | Stability reference |
+| **Ubuntu Noble 24.04** | ✅ Building on OBS | Snap-free, full GNOME desktop |
+| **Debian Bookworm 12** | ✅ Building on OBS | Stability reference |
 | Fedora | Planned (Phase 2) | Innovation reference |
 | Arch | Planned (Phase 2) | Advanced user segment |
 
@@ -127,6 +129,15 @@ Two automatic trigger paths — zero manual intervention:
 | **KIWI-ng** | Image builder — produces deployable `.raw` disk images |
 | **GNOME** | Desktop environment with openSUSE branding |
 | **Agama** | Installer (future phase) |
+
+## Downloads
+
+Built images are published on the openSUSE Build Service:
+
+| Edition | OBS Package | Download |
+|---|---|---|
+| Ubuntu | [tumbleweed-forge-ubuntu](https://build.opensuse.org/package/show/home:Mighty23:TumbleweedForge/tumbleweed-forge-ubuntu) | [images](https://download.opensuse.org/repositories/home:/Mighty23:/TumbleweedForge/images/) |
+| Debian | [tumbleweed-forge-debian](https://build.opensuse.org/package/show/home:Mighty23:TumbleweedForge/tumbleweed-forge-debian) | [images](https://download.opensuse.org/repositories/home:/Mighty23:/TumbleweedForge/images/) |
 
 ## License
 

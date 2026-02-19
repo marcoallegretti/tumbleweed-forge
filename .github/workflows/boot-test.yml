@@ -1,0 +1,80 @@
+name: Boot Test
+
+on:
+  schedule:
+    - cron: '0 4 * * 1'  # Weekly, Monday 04:00 UTC
+  workflow_dispatch:
+    inputs:
+      base:
+        description: 'Base to test (ubuntu, debian, or all)'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - ubuntu
+          - debian
+
+jobs:
+  prepare:
+    name: Resolve matrix
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set.outputs.matrix }}
+    steps:
+      - id: set
+        run: |
+          INPUT="${{ github.event.inputs.base }}"
+          if [ -z "$INPUT" ] || [ "$INPUT" = "all" ]; then
+            echo 'matrix=["ubuntu","debian"]' >> "$GITHUB_OUTPUT"
+          else
+            echo "matrix=[\"$INPUT\"]" >> "$GITHUB_OUTPUT"
+          fi
+
+  boot-test:
+    name: Boot test ${{ matrix.base }}
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        base: ${{ fromJSON(needs.prepare.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install QEMU and OVMF
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y qemu-system-x86 ovmf
+
+      - name: Download image from OBS
+        run: |
+          PROJECT="home:Mighty23:TumbleweedForge"
+          PKG="tumbleweed-forge-${{ matrix.base }}"
+          REPO="images"
+          ARCH="x86_64"
+
+          echo "Fetching binary list for $PKG..."
+          BINARIES=$(curl -sf \
+            "https://api.opensuse.org/public/build/$PROJECT/$REPO/$ARCH/$PKG")
+
+          RAW_FILE=$(echo "$BINARIES" \
+            | grep -oP 'filename="\K[^"]+\.raw' | head -1)
+
+          if [ -z "$RAW_FILE" ]; then
+            echo "No .raw image found in OBS binaries"
+            echo "$BINARIES"
+            exit 1
+          fi
+
+          echo "Downloading $RAW_FILE..."
+          curl -sfL -o image.raw \
+            "https://api.opensuse.org/public/build/$PROJECT/$REPO/$ARCH/$PKG/$RAW_FILE"
+
+          ls -lh image.raw
+
+      - name: Run boot smoke test
+        env:
+          BOOT_TIMEOUT: '240'
+        run: ci/scripts/test-image.sh image.raw
