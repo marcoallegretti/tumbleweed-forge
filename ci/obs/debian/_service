@@ -6,15 +6,14 @@
     <param name="revision">main</param>
     <param name="extract">bases/debian/appliance.kiwi</param>
     <param name="extract">bases/debian/config.sh</param>
-    <param name="exclude">bases/debian/root</param>
   </service>
-  <!-- Pull experience overlay (branding, dconf, GRUB, Plymouth) as tar archive -->
+  <!-- Pull experience overlay as root.obscpio (KIWI root overlay on OBS) -->
   <service name="obs_scm">
     <param name="scm">git</param>
     <param name="url">https://github.com/marcoallegretti/tumbleweed-forge.git</param>
     <param name="revision">main</param>
     <param name="version">_none_</param>
     <param name="subdir">experience/overlay</param>
-    <param name="filename">experience-overlay</param>
+    <param name="filename">root</param>
   </service>
 </services>

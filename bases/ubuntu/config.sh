@@ -9,6 +9,13 @@ set -euxo pipefail
 systemctl disable snapd.service snapd.socket snapd.seeded.service 2>/dev/null || true
 apt-get purge -y snapd snap-confine 2>/dev/null || true
 rm -rf /snap /var/snap /var/lib/snapd /var/cache/snapd
+# Prevent snapd from being reinstalled
+mkdir -p /etc/apt/preferences.d
+cat > /etc/apt/preferences.d/no-snap.pref <<'SNAPEOF'
+Package: snapd
+Pin: release a=*
+Pin-Priority: -10
+SNAPEOF
 
 #============================================
 # 2. Set up default user

@@ -70,11 +70,6 @@
         <package name="mawk"/>
     </packages>
 
-    <!-- openSUSE Experience Layer overlay (branding, dconf, GRUB, Plymouth) -->
-    <packages type="image">
-        <archive name="experience-overlay.tar.gz"/>
-    </packages>
-
     <packages type="image">
         <!-- Core system -->
         <package name="linux-generic"/>
