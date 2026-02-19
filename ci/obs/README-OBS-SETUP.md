@@ -28,6 +28,7 @@ This creates/updates the project, sets project config, creates the package, and 
 | Base | OBS support |
 |---|---|
 | Ubuntu | ✅ |
+| Ubuntu (native UX) | ✅ |
 | Debian | ✅ |
 | Deepin | 🔧 local-only (external repo not mirrored on OBS) |
 | KDE Neon | 🔧 local-only (external repo not mirrored on OBS) |
@@ -70,6 +71,7 @@ Use a per-base package name:
 
 ```bash
 osc meta pkg -e home:Mighty23:TumbleweedForge tumbleweed-forge-ubuntu
+osc meta pkg -e home:Mighty23:TumbleweedForge tumbleweed-forge-ubuntu-native
 osc meta pkg -e home:Mighty23:TumbleweedForge tumbleweed-forge-debian
 osc meta pkg -e home:Mighty23:TumbleweedForge tumbleweed-forge-arch
 ```

@@ -21,8 +21,6 @@ TARGET_DIR="${1:-$PROJECT_ROOT/build-output}"
 # Step 1: Assemble the KIWI build directory
 "$SCRIPT_DIR/assemble.sh" "$BASE" "$PROJECT_ROOT/_build/$BASE"
 BUILD_DIR="$PROJECT_ROOT/_build/$BASE"
-BUILD_DIR_FOR_KIWI="$BUILD_DIR"
-TARGET_DIR_FOR_KIWI="$TARGET_DIR"
 
 mkdir -p "$TARGET_DIR"
 
@@ -89,71 +87,37 @@ case "$BASE" in
         ;;
 esac
 
-USE_BOXBUILD=""
-BOX_NAME=""
 if [ "$BASE" = "arch" ]; then
     if ! command -v pacman >/dev/null 2>&1; then
-        USE_BOXBUILD=1
-        BOX_NAME="tumbleweed"
-        echo "Note: pacman not found; using boxbuild (--box $BOX_NAME)"
-    fi
-else
-    if ! command -v apt-get >/dev/null 2>&1 || ! command -v debootstrap >/dev/null 2>&1; then
-        USE_BOXBUILD=1
-        BOX_NAME="ubuntu"
-        echo "Note: apt-get/debootstrap not found; using boxbuild (--box $BOX_NAME)"
-    fi
-fi
-
-if [ -n "$USE_BOXBUILD" ]; then
-    if ! kiwi-ng system boxbuild --list-boxes >/dev/null 2>&1; then
-        echo "Error: kiwi boxed plugin not installed. Run: zypper install python3-kiwi_boxed_plugin"
+        echo "Error: pacman not found. Install pacman on the build host."
+        echo "       Arch builds require a host with pacman, or use OBS."
         exit 1
     fi
-
-    BOX_TMP_ROOT="${TMPDIR:-/tmp}/tumbleweed-forge-boxbuild"
-    BOX_BUILD_DIR="$BOX_TMP_ROOT/${BASE}-description"
-    BOX_TARGET_DIR="$BOX_TMP_ROOT/${BASE}-target"
-
-    rm -rf "$BOX_BUILD_DIR" "$BOX_TARGET_DIR"
-    mkdir -p "$BOX_TMP_ROOT" "$BOX_TARGET_DIR"
-    cp -a "$BUILD_DIR" "$BOX_BUILD_DIR"
-
-    python3 "$SCRIPT_DIR/rewrite-repos-local.py" "$BASE" "$BOX_BUILD_DIR/appliance.kiwi"
-
-    BUILD_DIR_FOR_KIWI="$BOX_BUILD_DIR"
-    TARGET_DIR_FOR_KIWI="$BOX_TARGET_DIR"
+else
+    if ! command -v apt-get >/dev/null 2>&1; then
+        echo "Error: apt-get not found. Apt-based builds require a Debian/Ubuntu host."
+        echo "       On other hosts, use OBS for full image builds."
+        exit 1
+    fi
+    if ! command -v debootstrap >/dev/null 2>&1; then
+        echo "Error: debootstrap not found. Install debootstrap on the build host."
+        exit 1
+    fi
 fi
 
 # Step 3: Run KIWI build
-if [ -n "$USE_BOXBUILD" ]; then
-    if [ "$(id -u)" -eq 0 ]; then
-        kiwi-ng --profile "$PROFILE" system boxbuild --container --box "$BOX_NAME" -- \
-            --description "$BUILD_DIR_FOR_KIWI" \
-            --target-dir "$TARGET_DIR_FOR_KIWI"
-    else
-        sudo kiwi-ng --profile "$PROFILE" system boxbuild --container --box "$BOX_NAME" -- \
-            --description "$BUILD_DIR_FOR_KIWI" \
-            --target-dir "$TARGET_DIR_FOR_KIWI"
-    fi
-
-    if [ -d "$TARGET_DIR_FOR_KIWI" ]; then
-        cp -a "$TARGET_DIR_FOR_KIWI"/. "$TARGET_DIR"/
-    fi
+if [ "$(id -u)" -eq 0 ]; then
+    kiwi-ng --profile "$PROFILE" system build \
+        --ignore-repos \
+        --description "$BUILD_DIR" \
+        --target-dir "$TARGET_DIR" \
+        "${REPOS[@]}"
 else
-    if [ "$(id -u)" -eq 0 ]; then
-        kiwi-ng --profile "$PROFILE" system build \
-            --ignore-repos \
-            --description "$BUILD_DIR" \
-            --target-dir "$TARGET_DIR" \
-            "${REPOS[@]}"
-    else
-        sudo kiwi-ng --profile "$PROFILE" system build \
-            --ignore-repos \
-            --description "$BUILD_DIR" \
-            --target-dir "$TARGET_DIR" \
-            "${REPOS[@]}"
-    fi
+    sudo kiwi-ng --profile "$PROFILE" system build \
+        --ignore-repos \
+        --description "$BUILD_DIR" \
+        --target-dir "$TARGET_DIR" \
+        "${REPOS[@]}"
 fi
 
 echo "Build complete ($PROFILE profile). Output: $TARGET_DIR/"

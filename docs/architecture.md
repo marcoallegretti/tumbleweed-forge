@@ -9,10 +9,10 @@ Tumbleweed Forge uses a three-layer architecture to decouple branding from distr
 │              Experience Layer (boot identity)              │
 │  GRUB theme · Plymouth splash · os-release · wallpapers     │
 │  apply-experience.sh (GRUB + Plymouth only)                │
-├───────────┬───────────┬───────────┬───────────┬───────────┤
-│  Ubuntu    │  Debian    │  Deepin    │ KDE Neon  │   Arch    │
-│  GNOME+Dock│  GNOME     │  DDE       │ Plasma 6  │ Plasma+   │
-│  apt/GDM   │  apt/GDM   │  apt/LDM   │ apt/SDDM  │ pacman    │
+├──────────┬──────────┬──────────┬──────────┬──────────┬──────────┤
+│  Ubuntu   │ Ubuntu   │  Debian   │  Deepin   │ KDE Neon │   Arch   │
+│  GNOME+   │ Native   │  GNOME    │  DDE      │ Plasma 6 │ Plasma+  │
+│  Dock/GDM │ Stock UX │  apt/GDM  │  apt/LDM  │ apt/SDDM │ pacman   │
 ├───────────┴───────────┴───────────┴───────────┴───────────┤
 │                     Build Layer                           │
 │  KIWI-ng · OBS · CI/CD · Assembly scripts                  │
@@ -26,6 +26,8 @@ Boot-level identity only. Contains universal assets that apply regardless of des
 
 - **`overlay/`** — GRUB theme, Plymouth splash, wallpapers (as available assets), `/etc/os-release`, `/etc/issue`. No desktop-specific config.
 - **`apply-experience.sh`** — Sourced by each base's `config.sh`. Handles GRUB and Plymouth activation only. Desktop configuration belongs in the base.
+
+> **Exception:** `ubuntu-native` does not apply the experience overlay. It preserves the upstream Ubuntu boot identity, system files, and Snap defaults. Its `config.sh` writes Ubuntu-native `/etc/os-release` and `/etc/issue` instead of Forge-branded ones.
 
 ### Base Layer (`bases/<distro>/`)
 
@@ -82,6 +84,7 @@ git push → OBS obs_scm source service
 | Base | Desktop | Local Build | OBS Build |
 |---|---|---|---|
 | Ubuntu Noble 24.04 | GNOME + Ubuntu Dock | ✅ | ✅ |
+| Ubuntu Noble (native) | Stock Ubuntu desktop (Snap enabled) | ✅ | ✅ |
 | Debian Bookworm 12 | Full GNOME (task-gnome-desktop) | ✅ | ✅ |
 | Deepin 23 (beige) | DDE + LightDM | ✅ | 🔧 blocked by external repo on OBS |
 | KDE Neon (Ubuntu 24.04) | Plasma 6 + SDDM | ✅ | 🔧 blocked by external repo on OBS |

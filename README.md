@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="imgs/forge-banner.svg" alt="Tumbleweed Forge" width="100%">
+</p>
+
 # Tumbleweed Forge
 
 A cross-distribution image framework with openSUSE visual identity, built by **OBS + KIWI-ng** — demonstrating the portability of the openSUSE build infrastructure.
@@ -124,6 +128,7 @@ ci/                          Build Layer
     project-meta.xml         Shared project metadata
     project-config.txt       Shared project config
     ubuntu/_service           Ubuntu source service
+    ubuntu-native/_service    Ubuntu (native UX) source service
     debian/_service           Debian source service
     deepin/_service           Deepin source service
     kde-neon/_service         KDE Neon source service
