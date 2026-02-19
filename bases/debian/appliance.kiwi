@@ -126,9 +126,6 @@
         <package name="plymouth"/>
         <package name="plymouth-themes"/>
 
-        <!-- Dash-to-Dock -->
-        <package name="gnome-shell-extension-dash-to-dock"/>
-
         <!-- KIWI dracut modules (required for oem image type) -->
         <package name="dracut-kiwi-oem-repart"/>
         <package name="dracut-kiwi-lib"/>
