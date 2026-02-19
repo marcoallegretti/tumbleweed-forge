@@ -34,13 +34,13 @@
                 repository_gpgcheck="false" architectures="amd64">
         <source path="obs://Virtualization:Appliances:Builder/xUbuntu_24.04"/>
     </repository>
-    <!-- KDE Neon User edition (latest Plasma on Noble) -->
-    <repository type="apt-deb" alias="KDE-Neon-User" priority="2"
-                distribution="noble"
-                components="main"
-                repository_gpgcheck="false">
-        <source path="http://archive.neon.kde.org/user"/>
-    </repository>
+    <!--
+        KDE Neon User repo (archive.neon.kde.org/user) is NOT mirrored
+        on OBS — no obs:// equivalent exists. For local builds it is
+        injected by build-local.sh via - -add-repo. OBS builds require
+        an admin-level DoD mirror; until one exists this base is
+        local-only.
+    -->
     <!-- Ubuntu Noble main+universe (OBS flat repo) -->
     <repository type="apt-deb" alias="Ubuntu-Noble-Universe"
                 repository_gpgcheck="false">

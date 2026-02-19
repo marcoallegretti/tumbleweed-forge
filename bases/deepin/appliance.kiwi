@@ -34,7 +34,16 @@
                 repository_gpgcheck="false" architectures="amd64">
         <source path="obs://Virtualization:Appliances:Builder/Debian_12"/>
     </repository>
-    <!-- Deepin 23 (beige) community packages -->
+    <!--
+        Deepin 23 repo (community-packages.deepin.com/beige) is NOT
+        mirrored on OBS. For local builds it is injected by
+        build-local.sh via - -add-repo. OBS builds require an
+        admin-level DoD mirror; until one exists this base is
+        local-only.
+
+        KIWI schema requires at least one non-builder repo for
+        validation, so we keep the URL here. OBS will reject it.
+    -->
     <repository type="apt-deb" alias="Deepin-Beige"
                 distribution="beige"
                 components="main community"

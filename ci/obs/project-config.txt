@@ -1,6 +1,6 @@
 # -- Tumbleweed Forge Project Configuration --
 # Applied via: osc meta prjconf -e home:Mighty23:TumbleweedForge
-# Shared across all DEB-based editions (Ubuntu, Debian)
+# Shared across all editions (Ubuntu, Debian, Deepin, KDE Neon)
 # Based on: Virtualization:Appliances:Images:Testing_x86:{ubuntu,debian}
 
 %if "%_repository" == "images"
