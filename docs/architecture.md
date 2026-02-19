@@ -64,8 +64,8 @@ Orchestration. Per-base OBS configurations and universal build scripts.
 ```
 ci/scripts/build-local.sh ubuntu
   └─► ci/scripts/assemble.sh ubuntu
-       ├─ copies bases/ubuntu/{appliance.kiwi,config.sh,root/}
-       └─ tars experience/overlay/ → experience-overlay.tar.gz
+       ├─ copies bases/ubuntu/{appliance.kiwi,config.sh}
+       └─ merges experience/overlay/ into root/ directory
   └─► kiwi-ng system build --description _build/ubuntu/ --add-repo ...
 ```
 
@@ -73,11 +73,12 @@ ci/scripts/build-local.sh ubuntu
 
 ```
 git push → OBS obs_scm source service
-  ├─ pulls bases/ubuntu/{appliance.kiwi,config.sh}
-  ├─ pulls bases/ubuntu/root/ as root.obscpio
-  └─ pulls experience/overlay/ as experience-overlay.obscpio
-       → KIWI extracts via <archive name="experience-overlay.tar.gz"/>
+  ├─ extracts bases/ubuntu/{appliance.kiwi,config.sh}
+  └─ pulls experience/overlay/ as root.obscpio
+       → KIWI extracts as the root filesystem overlay
 ```
+
+> **OBS compatibility note:** `obs_scm` always creates `.obscpio` archives, not `.tar.gz`. KIWI's `<archive>` element requires standard tar formats, so we cannot use it on OBS. Instead, the experience overlay is pulled directly as `root.obscpio` (via `filename=root`), which KIWI handles natively as the root overlay directory. Base-specific overlay files should be created in `config.sh` rather than in a separate `root/` directory.
 
 ## Adding a New Base
 
